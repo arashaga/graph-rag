@@ -1,0 +1,16 @@
+as part of admin panel
+set the api key base etc
+set the indexing method as an argument
+enable azure AI search and blob storage or cosmos
+Fix the fast indexing it appears it only triggers the standard
+
+you need to add this ti vite.config.ts 
+export default defineConfig({
+  // ...other config
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+  },
+});
+
+also run yarn dev --host 0.0.0.0

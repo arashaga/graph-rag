@@ -1,0 +1,10 @@
+openai
+fastapi
+pandas
+ipykernel
+python-dotenv
+semantic-kernel
+graphrag
+pdfplumber
+uvicorn
+python-multipart

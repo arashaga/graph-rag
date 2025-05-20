@@ -1,0 +1,75 @@
+# Python
+__pycache__/
+*.pyo
+*.pyd
+*.pdb
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.env
+.venv/
+venv/
+pip-log.txt
+pip-delete-this-directory.txt
+*.sqlite3
+*.db
+*.ipynb_checkpoints
+.mypy_cache/
+.pytest_cache/
+.coverage
+.tox/
+.coverage.*
+.cache
+.pyre/
+.dmypy.json
+.pytype/
+
+# Jupyter Notebook
+*.ipynb_checkpoints
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Build output
+dist/
+build/
+output/
+coverage/
+coverage-final.json
+.nyc_output/
+
+# VSCode
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# CSV and data files
+*.csv
+
+# dotenv environment files
+.env
+.env.*
+
+#data
+*.csv
+cache/
+input/
+settings.yaml
+notebooks/cache/
+notebooks/output/
+backend/output/
+backend/cache/
+backedn/input
+notebooks/input/
+notebooks/settings.yaml
+backend/settings.yaml
