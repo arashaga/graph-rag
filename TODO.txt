@@ -1,9 +1,11 @@
+
+update the packge with PRs  pip install git+https://github.com/microsoft/graphrag.git@main
 as part of admin panel
 set the api key base etc
 set the indexing method as an argument
 enable azure AI search and blob storage or cosmos
 Fix the fast indexing it appears it only triggers the standard
-
+fix the git remove cache and take care of the settings.yaml
 you need to add this ti vite.config.ts 
 export default defineConfig({
   // ...other config
@@ -14,3 +16,21 @@ export default defineConfig({
 });
 
 also run yarn dev --host 0.0.0.0
+
+
+notes:
+you need to prompt tuning for global search etc,  if you get an issue with max_length you need to replace that in the prompt
+when upgraing you need to do graphrag init --root yourfolder with force flag
+
+set these otherwise youet errors:
+    max_retries: 10                   # set to -1 for dynamic retry logic (most optimal setting based on server response)
+    tokens_per_minute: auto              # set to 0 to disable rate limiting
+    requests_per_minute: auto  
+
+
+    tesrt the incremental with update
+
+
+    Auto Tuning:
+    graphrag prompt-tune --root ./notebooks --config ./notebooks/settings.yaml --domain "tehcnology" --output ./notebooks/prompt-tuned
+    then chage the folders in the settings yaml to point to these prompts

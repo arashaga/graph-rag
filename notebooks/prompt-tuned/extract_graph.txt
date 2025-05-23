@@ -1,0 +1,347 @@
+
+-Goal-
+Given a text document that is potentially relevant to this activity and a list of entity types, identify all entities of those types from the text and all relationships among the identified entities.
+
+-Steps-
+1. Identify all entities. For each identified entity, extract the following information:
+- entity_name: Name of the entity, capitalized
+- entity_type: One of the following types: [error, solution, product experience, activity, pipeline, data, feature, workspace, model, database, connector, security, permission, analytics, AI, machine learning, eventhouse, KQL database, real-time hub, data warehouse, data factory, data agent, semantic model, row-level security, data flow, monitoring, Git integration, sensitivity label]
+- entity_description: Comprehensive description of the entity's attributes and activities
+Format each entity as ("entity"{tuple_delimiter}<entity_name>{tuple_delimiter}<entity_type>{tuple_delimiter}<entity_description>)
+
+2. From the entities identified in step 1, identify all pairs of (source_entity, target_entity) that are *clearly related* to each other.
+For each pair of related entities, extract the following information:
+- source_entity: name of the source entity, as identified in step 1
+- target_entity: name of the target entity, as identified in step 1
+- relationship_description: explanation as to why you think the source entity and the target entity are related to each other
+- relationship_strength: an integer score between 1 to 10, indicating strength of the relationship between the source entity and target entity
+Format each relationship as ("relationship"{tuple_delimiter}<source_entity>{tuple_delimiter}<target_entity>{tuple_delimiter}<relationship_description>{tuple_delimiter}<relationship_strength>)
+
+3. Return output in English as a single list of all the entities and relationships identified in steps 1 and 2. Use **{record_delimiter}** as the list delimiter.
+
+4. If you have to translate into English, just translate the descriptions, nothing else!
+
+5. When finished, output {completion_delimiter}.
+
+-Examples-
+######################
+
+Example 1:
+
+entity_types: [error, solution, product experience, activity, pipeline, data, feature, workspace, model, database, connector, security, permission, analytics, AI, machine learning, eventhouse, KQL database, real-time hub, data warehouse, data factory, data agent, semantic model, row-level security, data flow, monitoring, Git integration, sensitivity label]
+text:
+ delete a CopyJob item, you receive an error. The error message
+tells you that the deletion failed. Additionally, the CopyJob item isn't deleted.
+Solutions and workarounds
+No workarounds at this time. This article will be updated when the fix is released.
+Next steps
+About known issues
+Feedback
+Was this page helpful?  Yes  No
+Provide product feedback | Ask the community
+Known issue - Preview destination data
+on a pipeline's copy activity fails
+Article • 03/19/2025
+In a pipeline, you can set up a copy activity. In the destination of the copy activity, you
+can preview the data. When you select on the preview button, it fails with an error.
+Status: Fixed: March 18, 2025
+Product Experience: Data Factory
+Symptoms
+In a pipeline, you have a copy activity. In the copy activity, you select the Destination
+tab > Preview data. The preview doesn't show and you receive an error.
+Solutions and workarounds
+No workarounds at this time. This article will be updated when the fix is released.
+Next steps
+About known issues
+Feedback
+Was this page helpful?  Yes  No
+Provide product feedback | Ask the community
+Known issue - Unsupported error for
+legacy timestamp in Fabric Runtime 1.3
+Article • 02/06/2025
+When using the native execution engine in Fabric Runtime 1.3, you might encounter an
+error if your data contains legacy timestamps. This issue arises due to compatibility
+challenges introduced when Spark 3.0 transitioned to the Java 8 date/time API, which
+uses the Proleptic Gregorian calendar (SQL ISO standard). Earlier Spark versions utilized
+a hybrid Julian-Gregorian calendar, resulting in potential discrepancies when processing
+timestamp data created by different Spark versions.
+Status: Open
+Product Experience: Data Engineering
+Symptoms
+When using legacy timestamp support in native execution engine for Fabric Runtime 1.3,
+you receive an error. The error message is similar to: Error Source: USER. Error Code:
+UNSUPPORTED. Reason: Reading legacy timestamp is not supported.
+Solutions and workarounds
+For more information about the feature that addresses this known issue, see the blog
+post on legacy timestamp support . To activate the feature, add the following to your
+Spark session: SET spark.gluten.legacy.timestamp.rebase.enabled = true. Dates that
+are post-1970 are unaffected, ensuring consistency without extra steps.
+Next steps
+About known issues
+Feedback
+Was this page helpful?  Yes  No
+Provide product feedback | Ask the community
+Known issue - Notebook and SJD job
+statuses are in progress in monitor hub
+Article • 02/03/2025
+You can trigger a notebook or Spark job definition (SJD) job's execution using the Fabric
+public API with a service principal token. You can use the monitor hub to track the status
+of the job. In this known issue, the job status is In-progress even after the execution of
+the job completes.
+Status: Open
+Product Experience: Data Engineering
+Symptoms
+In the monitor hub, you see a stuck job status of In-progress for a notebook or SJD job
+that was submitted by a service principal.
+Solutions and workarounds
+As a temporary workaround, use the Recent-Run job history inside the notebook or SJD
+to query the correct job status.
+Next steps
+About known issues
+Feedback
+Was this page helpful?  Yes  No
+Provide product feedback | Ask the community
+Known issue - Copilot sidecar chat fails
+with certain private link settings
+Article • 05/09/2025
+Copilot sidecar chat when you enable private link on your Fabric tenant and disabled public
+network access.
+Status: Fixed: May 9, 2025
+Product Experience: Databases
+Symptoms
+If you enable private link on your Fabric tenant and disable public network access, the Copilot
+sidecar chat fails with an error. The error message is similar to: "I'm sorry, but I encountered
+an error while answering your question. Please try again." when you submit any prompts.
+However, Copilot inline code completion and quick actions still work as expected.
+Solutions and workarounds
+No workarounds at this time. This article will be updated when the fix is released.
+Next steps
+About known issues
+Known issue - Reports that use
+functions with RLS don't work
+Article • 02/03/2025
+You can define row-level security (RLS) for a table that contains measures.
+USERELATIONSHIP() and CROSSFILTER() functions can't be used in the measures. A
+change was recently made to enforce this requirement.
+Status: Open
+Product Experience: Power BI
+Symptoms
+When viewing a report, you see an error message. The error message is similar to:
+"Error fetching data for this Visual. The UseRelationship() and Crossfilter()
+functions may not be used when querying <dataset> because it is constrained by row
+level security" or "The USERELATIONSHIP() and CROSSFILTER() functions may not be
+used when querying 'T' because it is constrained by row-level security."
+Solutions and workarounds
+The change is to enforce a security requirement. To prevent your reports from failing,
+you can remove USERELATIONSHIP() and CROSSFILTER() from your measures.
+Alternatively, you can modify the relationships using recommendations for RLS models.
+Next steps
+About known issues
+Feedback
+Was this page helpful?  Yes  No
+Provide product feedback | Ask the community
+Known issue
+------------------------
+output:
+("entity"{tuple_delimiter}COPYJOB{tuple_delimiter}ERROR{tuple_delimiter}The CopyJob is an item that, when attempted to be deleted, results in an error indicating that the deletion failed and the item remains intact.)
+{record_delimiter}
+("entity"{tuple_delimiter}PIPELINE{tuple_delimiter}ACTIVITY{tuple_delimiter}A pipeline is a data processing workflow that includes activities such as copy activities to manage data movement and transformation.)
+{record_delimiter}
+("entity"{tuple_delimiter}DATA FACTORY{tuple_delimiter}PRODUCT EXPERIENCE{tuple_delimiter}Data Factory is a product experience that allows users to create data pipelines for data integration and transformation.)
+{record_delimiter}
+("entity"{tuple_delimiter}FABRIC RUNTIME 1.3{tuple_delimiter}PRODUCT EXPERIENCE{tuple_delimiter}Fabric Runtime 1.3 is a version of the execution engine that may encounter compatibility issues with legacy timestamps.)
+{record_delimiter}
+("entity"{tuple_delimiter}MONITOR HUB{tuple_delimiter}WORKSPACE{tuple_delimiter}The Monitor Hub is a workspace used to track the status of jobs and activities within data processing workflows.)
+{record_delimiter}
+("entity"{tuple_delimiter}COPILOT SIDECAR CHAT{tuple_delimiter}FEATURE{tuple_delimiter}Copilot Sidecar Chat is a feature that allows users to interact with a chat interface for assistance, which may fail under certain network settings.)
+{record_delimiter}
+("entity"{tuple_delimiter}ROW-LEVEL SECURITY{tuple_delimiter}FEATURE{tuple_delimiter}Row-Level Security (RLS) is a feature that restricts data access at the row level based on user roles and permissions.)
+{record_delimiter}
+("relationship"{tuple_delimiter}COPYJOB{tuple_delimiter}PIPELINE{tuple_delimiter}The CopyJob is an activity within a pipeline that is responsible for data movement and transformation tasks.{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}PIPELINE{tuple_delimiter}DATA FACTORY{tuple_delimiter}Pipelines are created and managed within the Data Factory product experience for data integration.{tuple_delimiter}9)
+{record_delimiter}
+("relationship"{tuple_delimiter}FABRIC RUNTIME 1.3{tuple_delimiter}COPYJOB{tuple_delimiter}The CopyJob may encounter errors when executed under Fabric Runtime 1.3 due to legacy timestamp compatibility issues.{tuple_delimiter}7)
+{record_delimiter}
+("relationship"{tuple_delimiter}MONITOR HUB{tuple_delimiter}PIPELINE{tuple_delimiter}The Monitor Hub is used to track the execution status of pipelines and their activities.{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}COPILOT SIDECAR CHAT{tuple_delimiter}FABRIC RUNTIME 1.3{tuple_delimiter}The Copilot Sidecar Chat feature may fail when private link settings are enabled on Fabric Runtime 1.3.{tuple_delimiter}6)
+{record_delimiter}
+("relationship"{tuple_delimiter}ROW-LEVEL SECURITY{tuple_delimiter}DATA FACTORY{tuple_delimiter}Row-Level Security is a feature that can be defined within Data Factory to control data access in reports.{tuple_delimiter}7)
+{completion_delimiter}
+#############################
+
+
+Example 2:
+
+entity_types: [error, solution, product experience, activity, pipeline, data, feature, workspace, model, database, connector, security, permission, analytics, AI, machine learning, eventhouse, KQL database, real-time hub, data warehouse, data factory, data agent, semantic model, row-level security, data flow, monitoring, Git integration, sensitivity label]
+text:
+
+Article • 03/19/2025
+If you drop and recreate the same table quickly and repeatedly on the source SQL
+database, the mirrored table might enter a failed state. The error message indicates the
+source table doesn't exist.
+Status: Open
+Product Experience: Data Factory
+Symptoms
+The issue affects Mirrored Azure SQL database, SQL MI, and Fabric SQL database. You
+see this error when you drop and recreate the same table quickly and repeatedly on the
+source SQL database. The mirrored table might enter a failed state indicating the source
+table doesn't exist. The error message is similar to: Error: SqlError, Type: UserError,
+Message: Source table does not exist in the current database. Ensure that the
+correct database context is set. Specify a valid schema and table name for the
+database.
+Solutions and workaround
+For Azure SQL database and SQL MI, the workaround is to restart mirroring in auto
+mode when encountering the error. For Fabric SQL database, raise a support request
+with the Fabric Mirroring team.
+Next steps
+About known issues
+Feedback
+Was this page helpful?  Yes  No
+Provide product feedback | Ask the community
+Known issue - Workspaces created
+during Fabric preview only support
+limited OneLake features
+Article • 03/19/2025
+If you created a OneLake data item, such as a lakehouse or warehouse, during the Fabric
+preview period of April 4, 2023 or earlier, the workspace only supports some OneLake
+features.
+Status: Open
+Product Experience: OneLake
+Symptoms
+OneLake items in that workspace don't support OneLake events, OneLake disaster
+recovery, and new features such as private link support at a workspace level.
+Solutions and workarounds
+Recommended actions:
+1. Create a new workspace: Ensure your workspace settings match the old workspace
+and reassign all user permissions.
+2. Create new items in the new workspace: Recreate any items in the new
+workspace. Recreation includes any internal configurations, such as permissions,
+data models, and shortcuts.
+3. Copy data to the new workspace: Transfer any necessary data into a new
+workspace. You can copy your data between OneLake paths using tools like
+AzCopy, the copy activity in Fabric pipelines, or Azure Storage Explorer.
+4. Delete the old workspace: Once you transfer your data, delete the old workspace
+to avoid any issues with unsupported features.
+Next steps
+About known issues
+Feedback
+Was this page helpful?  Yes  No
+Provide product feedback | Ask the community
+Known issue - Spark Job Definition
+activity incorrectly shows failure status
+Article • 03/13/2025
+You can create a Spark Job Definition activity in a Data Factory data pipeline. After the
+activity runs, you might see a failure run status with a user configuration message.
+Status: Open
+Product Experience: Data Factory
+Symptoms
+The Spark Job Definition Activity has a failure run status. The failure message is similar
+to: Execution failed. Error: Execution failed. Error message:
+'Type=System.InvalidOperationException,Message=The request message was already
+sent. Cannot send the same request message multiple times.
+Solutions and workarounds
+Although the execution status shows as failure, the activity completed successfully. You
+can see the correct status on the monitoring tab on the Spark Job Definition item.
+Next steps
+About known issues
+Feedback
+Was this page helpful?  Yes  No
+Provide product feedback | Ask the community
+Known issue - Custom visuals using
+dialog or download API don't work in
+February Desktop
+Article • 03/11/2025
+You can create a custom visual that uses the dialog API, which is the API for showing
+modal dialogs from custom visuals, or the download API. If you use the custom visual, it
+doesn't work in the February version of Power BI Desktop (Version: 2.140.1078.0).
+Status: Fixed: March 10, 2025
+Product Experience: Power BI
+Symptoms
+If you try to open a custom visual that uses the dialog or download API, the dialog
+doesn't open. The issue only happens in the Desktop, not in the Service.
+Solutions and workarounds
+The latest version of Power BI Desktop includes the fix to the known issue. If you're a
+Microsoft Store customer, you get the new version automatically. If you're a Download
+Center customer, you can download the new version (Version: 2.140.1454.0).
+Next steps
+About known issues
+Feedback
+Was this page helpful?  Yes  No
+Provide product feedback | Ask the community
+Known issue - Data Agent creation fails
+when tenant settings restricted to security
+groups
+Article • 04/11/2025
+To work with the Data Science Fabric Data Agents, you enable the Copilot and Azure OpenAI
+Service and Users can create and share Fabric Data Agent item types (preview) tenant
+settings. If you restrict the settings to apply to specific security groups, Fabric Data Agent
+creation fails. The Fabric Data Agent is needed to add new AI-powered capabilities.
+Status: Fixed: April 10, 2025
+Product Experience: Data Science
+Symptoms
+When trying to create a Fabric Data Agent, the creation fails and you receive an error. The error
+message is similar to TenantSwitch is disabled.
+Solutions and workarounds
+As a temporary workaround, enable the Copilot and Azure OpenAI Service and Users can
+create and share Fabric Data Agent item types (preview) tenant settings for the entire
+organization.
+Next steps
+About known issues
+Known issue - Live connection to local
+model conversion resets report
+------------------------
+output:
+("entity"{tuple_delimiter}MIRRORED AZURE SQL DATABASE{tuple_delimiter}DATABASE{tuple_delimiter}The Mirrored Azure SQL Database is a database that can enter a failed state if the source table is dropped and recreated quickly and repeatedly.)
+{record_delimiter}
+("entity"{tuple_delimiter}SQL MI{tuple_delimiter}DATABASE{tuple_delimiter}SQL Managed Instance (SQL MI) is a cloud database service that can experience issues with mirrored tables when the source table is manipulated rapidly.)
+{record_delimiter}
+("entity"{tuple_delimiter}FABRIC SQL DATABASE{tuple_delimiter}DATABASE{tuple_delimiter}Fabric SQL Database is a database service that may encounter errors related to mirrored tables when the source table is dropped and recreated quickly.)
+{record_delimiter}
+("entity"{tuple_delimiter}DATA FACTORY{tuple_delimiter}PRODUCT EXPERIENCE{tuple_delimiter}Data Factory is a product experience that allows users to create data pipelines and manage data workflows.)
+{record_delimiter}
+("entity"{tuple_delimiter}ONELAKE{tuple_delimiter}PRODUCT EXPERIENCE{tuple_delimiter}OneLake is a product experience that supports data items like lakehouses and warehouses, but has limitations for workspaces created during the Fabric preview.)
+{record_delimiter}
+("entity"{tuple_delimiter}POWER BI{tuple_delimiter}PRODUCT EXPERIENCE{tuple_delimiter}Power BI is a business analytics service that provides interactive visualizations and business intelligence capabilities.)
+{record_delimiter}
+("entity"{tuple_delimiter}FABRIC DATA AGENT{tuple_delimiter}PRODUCT EXPERIENCE{tuple_delimiter}Fabric Data Agent is a tool that enables AI-powered capabilities within the Data Science Fabric environment.)
+{record_delimiter}
+("entity"{tuple_delimiter}SPARK JOB DEFINITION{tuple_delimiter}ACTIVITY{tuple_delimiter}Spark Job Definition is an activity within Data Factory that can show a failure status despite successful execution.)
+{record_delimiter}
+("entity"{tuple_delimiter}CUSTOM VISUAL{tuple_delimiter}FEATURE{tuple_delimiter}Custom Visuals are features in Power BI that allow users to create tailored visual representations of data, but may have compatibility issues with certain APIs.)
+{record_delimiter}
+("entity"{tuple_delimiter}DIALOG API{tuple_delimiter}CONNECTOR{tuple_delimiter}The Dialog API is a connector used in custom visuals to show modal dialogs, which may not function correctly in specific versions of Power BI Desktop.)
+{record_delimiter}
+("entity"{tuple_delimiter}DOWNLOAD API{tuple_delimiter}CONNECTOR{tuple_delimiter}The Download API is a connector used in custom visuals for downloading data, which may have issues in certain versions of Power BI Desktop.)
+{record_delimiter}
+("entity"{tuple_delimiter}SECURITY GROUPS{tuple_delimiter}PERMISSION{tuple_delimiter}Security Groups are used to restrict tenant settings for creating Fabric Data Agents, which can lead to creation failures if not configured properly.)
+{record_delimiter}
+("relationship"{tuple_delimiter}MIRRORED AZURE SQL DATABASE{tuple_delimiter}SQL MI{tuple_delimiter}Both databases can enter a failed state when the source table is manipulated rapidly, indicating a relationship in their operational behavior.{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}MIRRORED AZURE SQL DATABASE{tuple_delimiter}FABRIC SQL DATABASE{tuple_delimiter}Both databases can experience issues with mirrored tables when the source table is dropped and recreated quickly.{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}SQL MI{tuple_delimiter}FABRIC SQL DATABASE{tuple_delimiter}Both databases are affected by similar issues related to mirrored tables and source table manipulation.{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}DATA FACTORY{tuple_delimiter}SPARK JOB DEFINITION{tuple_delimiter}The Spark Job Definition is an activity that can be created within Data Factory, linking the two entities closely.{tuple_delimiter}9)
+{record_delimiter}
+("relationship"{tuple_delimiter}ONELAKE{tuple_delimiter}DATA FACTORY{tuple_delimiter}OneLake items can be managed and created through Data Factory, indicating a relationship in their functionality.{tuple_delimiter}7)
+{record_delimiter}
+("relationship"{tuple_delimiter}POWER BI{tuple_delimiter}CUSTOM VISUAL{tuple_delimiter}Custom visuals are a feature of Power BI, establishing a direct relationship between the two entities.{tuple_delimiter}10)
+{record_delimiter}
+("relationship"{tuple_delimiter}CUSTOM VISUAL{tuple_delimiter}DIALOG API{tuple_delimiter}The Dialog API is used within custom visuals to show modal dialogs, indicating a functional relationship.{tuple_delimiter}9)
+{record_delimiter}
+("relationship"{tuple_delimiter}CUSTOM VISUAL{tuple_delimiter}DOWNLOAD API{tuple_delimiter}The Download API is utilized in custom visuals for downloading data, establishing a relationship based on functionality.{tuple_delimiter}9)
+{record_delimiter}
+("relationship"{tuple_delimiter}FABRIC DATA AGENT{tuple_delimiter}SECURITY GROUPS{tuple_delimiter}The creation of Fabric Data Agents can be restricted by security groups, indicating a relationship based on permissions.{tuple_delimiter}8)
+{completion_delimiter}
+#############################
+
+
+
+-Real Data-
+######################
+entity_types: [error, solution, product experience, activity, pipeline, data, feature, workspace, model, database, connector, security, permission, analytics, AI, machine learning, eventhouse, KQL database, real-time hub, data warehouse, data factory, data agent, semantic model, row-level security, data flow, monitoring, Git integration, sensitivity label]
+text: {input_text}
+######################
+output:

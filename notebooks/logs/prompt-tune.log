@@ -1,0 +1,36 @@
+18:28:33,230 graphrag.cli.index INFO Logging enabled at /workspaces/chatui/notebooks/logs/prompt-tune.log
+18:28:33,245 graphrag.index.input.factory INFO loading input from root_dir=input
+18:28:33,246 graphrag.index.input.factory INFO using file storage for input
+18:28:33,250 graphrag.storage.file_pipeline_storage INFO search /workspaces/chatui/notebooks/input for files matching .*\.txt$
+18:28:33,321 graphrag.index.input.util INFO Found 1 InputFileType.text files, loading 1
+18:28:33,321 graphrag.index.input.util INFO Total number of unfiltered InputFileType.text rows: 1
+18:28:35,782 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:28:37,443 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:28:40,827 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:31:40,871 openai._base_client INFO Retrying request to /chat/completions in 0.454535 seconds
+18:31:45,565 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:31:58,558 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:32:01,979 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:32:13,609 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:32:14,88 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:32:27,611 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:32:40,509 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:32:40,517 graphrag.cli.index INFO Writing prompts to /notebooks/prompt-tuned
+18:37:25,998 graphrag.cli.index INFO Logging enabled at /workspaces/chatui/notebooks/logs/prompt-tune.log
+18:37:26,17 graphrag.index.input.factory INFO loading input from root_dir=input
+18:37:26,17 graphrag.index.input.factory INFO using file storage for input
+18:37:26,19 graphrag.storage.file_pipeline_storage INFO search /workspaces/chatui/notebooks/input for files matching .*\.txt$
+18:37:26,57 graphrag.index.input.util INFO Found 1 InputFileType.text files, loading 1
+18:37:26,58 graphrag.index.input.util INFO Total number of unfiltered InputFileType.text rows: 1
+18:37:28,708 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:37:30,892 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:37:34,790 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:37:39,979 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:38:01,53 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:38:05,138 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:38:08,18 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:38:13,608 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:38:31,732 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:38:43,590 httpx INFO HTTP Request: POST https://gpt4-assistants-api.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-02-15-preview "HTTP/1.1 200 OK"
+18:38:43,597 graphrag.cli.index INFO Writing prompts to /workspaces/chatui/notebooks/prompt-tuned
+18:38:43,617 graphrag.cli.index INFO Prompts written to /workspaces/chatui/notebooks/prompt-tuned

@@ -1,0 +1,150 @@
+{
+    "type": "error",
+    "data": "Error Invoking LLM",
+    "stack": "Traceback (most recent call last):\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/base/base_llm.py\", line 144, in __call__\n    return await self._decorated_target(prompt, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/base/services/cached.py\", line 137, in invoke\n    result = await delegate(prompt, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/base/services/rate_limiter.py\", line 73, in invoke\n    async with self._limiter.use(manifest):\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/limiting/base.py\", line 31, in __aenter__\n    async with LimitContext.acquire_semaphore:\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/asyncio/locks.py\", line 14, in __aenter__\n    await self.acquire()\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/asyncio/locks.py\", line 386, in acquire\n    await fut\nasyncio.exceptions.CancelledError\n",
+    "source": "",
+    "details": {
+        "prompt": [
+            "IDLE EXECUTORS:Idle Executors are Spark executors that are not currently processing tasks, which can indicate resource availability and efficiency in job execution.",
+            "NOTEBOOK PIPELINE:",
+            "RUNNING EXECUTORS:",
+            "SCREEN READER COMPATIBILITY:Screen Reader Compatibility is a feature that enhances accessibility by allowing visually impaired users to interact with the Lakehouse interface using screen reading software.",
+            "RESPONSIVE DESIGN:Responsive Design is a feature that ensures the Lakehouse interface adapts to different screen sizes and devices, improving user experience across platforms.",
+            "KEYBOARD NAVIGATION:Keyboard Navigation is a feature that allows users to navigate the Lakehouse interface using keyboard shortcuts, enhancing accessibility for users who prefer not to use a mouse.",
+            "ALTERNATIVE TEXT FOR IMAGES:Alternative Text for Images is a feature that provides descriptive text for images in the Lakehouse interface, improving accessibility for visually impaired users.",
+            "FORM FIELDS AND LABELS:Form Fields and Labels are elements in the Lakehouse interface that enhance accessibility by providing clear labels and input fields for user interaction.",
+            "AZURE STORAGE EXPLORER:",
+            "POWERBICLIENT:The PowerBICLIENT Python package is now natively supported in Fabric notebooks, allowing users to embed and interact with Power BI reports easily.",
+            "NOTEBOOK RESOURCES:Notebook Resources allow users to upload and manage libraries and files within Fabric notebooks, enhancing functionality and usability.",
+            "DATA ENGINEERING VS CODE EXTENSION:The \"Data Engineering VS Code Extension\" is a powerful tool designed to enhance the workflow of data engineers by enabling them to edit and execute Fabric Notebooks directly within the Visual Studio Code (VS Code) environment. This extension significantly improves the development experience by integrating notebook functionalities seamlessly into VS Code, allowing users to manage their data engineering tasks more efficiently. By supporting notebook items within this popular code editor, the extension streamlines the process of working with data, making it an essential resource for professionals in the field.",
+            "DIRECT LAKE DATASETS:Direct Lake datasets support XMLA-Write operations, allowing users to manage datasets using BI tools and scripts.",
+            "NOTEBOOK SHARING:Notebook Sharing enables users to share notebooks with specific permissions, allowing for collaborative work and controlled access to notebook content.",
+            "NOTEBOOK SAVE CONFLICT:Notebook Save Conflict resolution allows users to view and compare differences between versions of the same notebook, facilitating better version control.",
+            "MSSPARKUTILS FASTCP:MSSPARKUTILS FastCP is a method that enables faster data movement and copying within Fabric, improving performance for large data operations."
+        ],
+        "kwargs": {}
+    }
+}
+{
+    "type": "error",
+    "data": "Error Invoking LLM",
+    "stack": "Traceback (most recent call last):\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/base/base_llm.py\", line 144, in __call__\n    return await self._decorated_target(prompt, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/base/services/cached.py\", line 137, in invoke\n    result = await delegate(prompt, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/base/services/rate_limiter.py\", line 73, in invoke\n    async with self._limiter.use(manifest):\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/limiting/base.py\", line 31, in __aenter__\n    async with LimitContext.acquire_semaphore:\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/asyncio/locks.py\", line 14, in __aenter__\n    await self.acquire()\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/asyncio/locks.py\", line 386, in acquire\n    await fut\nasyncio.exceptions.CancelledError\n",
+    "source": "",
+    "details": {
+        "prompt": [
+            "TEXT ANALYTICS:Text Analytics is an AI service that provides natural language processing capabilities, allowing users to extract insights from text data.",
+            "REST API FOR ML EXPERIMENTS:The REST API for ML Experiments allows users to programmatically create and manage machine learning experiments, facilitating automation and integration in workflows.",
+            "REST API FOR ML MODELS:The REST API for ML Models enables users to manage machine learning models programmatically, supporting automation and integration in data pipelines.",
+            "SPARKLYR:Sparklyr is an R interface for Apache Spark, enabling users to connect to Spark and perform data analysis using R programming.",
+            "SPARKR:SparkR is an R package that provides a frontend to Apache Spark, allowing users to leverage Spark's capabilities for data analysis in R.",
+            "EXPERIMENT TRACKING:Experiment Tracking is a feature that allows users to monitor and manage their machine learning experiments, including metrics and parameters.",
+            "RECENT EXPERIMENT RUNS:Recent Experiment Runs is a feature that simplifies the process of checking recent runs for experiments directly from the workspace list view.",
+            "LARGE LANGUAGE MODELS:Large Language Models (LLMs) are advanced AI models designed to understand and generate human-like text, used in conjunction with Microsoft Fabric for various applications.",
+            "RAG SYSTEMS:Retrieval Augmented Generation (RAG) systems are frameworks that combine retrieval and generation techniques to improve the performance of AI applications.",
+            "SARIMAX:SARIMAX is a statistical model used for time series forecasting, applied in Microsoft Fabric for predicting sales and other metrics.",
+            "CHAINLIT:Chainlit is a framework that enables the development of chatbots and interactive applications, integrated with SQL databases in Microsoft Fabric.",
+            "DATA SCIENCE SAMPLES:Data Science Samples are collections of pre-built examples and templates in Microsoft Fabric that showcase various data science techniques and workflows.",
+            "POWER BI VISUALIZATION:Power BI Visualization refers to the capabilities within Microsoft Fabric that allow users to create visual representations of data for analysis and reporting.",
+            "MODEL TUNING:Model Tuning is the process of optimizing machine learning models to improve their performance, which is a key activity in data science workflows within Microsoft Fabric.",
+            "EXPLAINING MODEL OUTPUTS:Explaining Model Outputs is a feature in Microsoft Fabric that helps users understand the results produced by machine learning models.",
+            "VISUALIZING MODEL BEHAVIOR:Visualizing Model Behavior is a feature that allows users to see how machine learning models behave under different conditions, aiding in model evaluation."
+        ],
+        "kwargs": {}
+    }
+}
+{
+    "type": "error",
+    "data": "Error Invoking LLM",
+    "stack": "Traceback (most recent call last):\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/base/base_llm.py\", line 144, in __call__\n    return await self._decorated_target(prompt, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/base/services/cached.py\", line 137, in invoke\n    result = await delegate(prompt, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/base/services/rate_limiter.py\", line 73, in invoke\n    async with self._limiter.use(manifest):\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/limiting/base.py\", line 31, in __aenter__\n    async with LimitContext.acquire_semaphore:\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/asyncio/locks.py\", line 14, in __aenter__\n    await self.acquire()\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/asyncio/locks.py\", line 386, in acquire\n    await fut\nasyncio.exceptions.CancelledError\n",
+    "source": "",
+    "details": {
+        "prompt": [
+            "NOTEBOOK FILE SYSTEM:",
+            "DATA HUB:The Data Hub is a workspace that facilitates access to lakehouse data and integrates with various analytics endpoints and semantic models.",
+            "DELTA CHANGE DATA FEED:Delta Change Data Feed is a feature that enables seamless data synchronization across different lakehouses, enhancing ETL processes.",
+            "FILE EDITOR:The File Editor feature in Fabric Notebook enables users to view and edit various file types directly within the notebook's resource folder.",
+            "ACCESS PERMISSION:",
+            "DATA TRANSFER:Data Transfer refers to the process of moving data between different storage locations or systems, often facilitated by data pipelines.",
+            "SPARK 3.X:Spark 3.X is a version of Apache Spark that includes various enhancements and features for big data processing and analytics.",
+            "PYTHON LIBRARY:A Python Library in the context of Microsoft Fabric allows users to create and reuse custom libraries for data processing and analysis.",
+            "VPC-PROTECTED S3 BUCKET:",
+            "MLFLOW:MLflow is a feature that allows users to apply tags directly on ML experiment runs, model runs, and model versions from the user interface.",
+            "PREDICT:PREDICT is a built-in feature in Fabric that allows users to make predictions using AutoML models through a user interface and code-first APIs.",
+            "SEMANTIC LINK LABS:Semantic Link Labs is a library of Python solutions designed to assist Power BI developers in automating complex tasks within the Fabric ecosystem.",
+            "DATA INGESTION FRAMEWORK:The Data Ingestion Framework is a batch data ingestion solution designed to facilitate the building of lakehouses in Fabric.",
+            "PUBLIC API:The Public API for Data Engineering/Science provides REST API support for managing Spark compute and workspace settings in Fabric.",
+            "SEMANTIC LINK GA:Semantic Link GA refers to the general availability of semantic links in Fabric, allowing immediate use without installation.",
+            "AI AND COPILOT:AI and Copilot features in Fabric enable organizations to leverage AI capabilities and assist users in data science and engineering tasks."
+        ],
+        "kwargs": {}
+    }
+}
+{
+    "type": "error",
+    "data": "Error Invoking LLM",
+    "stack": "Traceback (most recent call last):\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/base/base_llm.py\", line 144, in __call__\n    return await self._decorated_target(prompt, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/base/services/cached.py\", line 137, in invoke\n    result = await delegate(prompt, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/base/services/rate_limiter.py\", line 73, in invoke\n    async with self._limiter.use(manifest):\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/limiting/base.py\", line 32, in __aenter__\n    await self._limiter.acquire(self._manifest)\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/limiting/composite.py\", line 33, in acquire\n    await limiter.acquire(manifest)\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/limiting/rpm.py\", line 39, in acquire\n    await self._limiter.acquire()\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/aiolimiter/leakybucket.py\", line 151, in acquire\n    await fut\nasyncio.exceptions.CancelledError\n",
+    "source": "",
+    "details": {
+        "prompt": [
+            "DATA LOADING:Data Loading refers to the process of transferring data from one source to another, often involving validation and transformation steps.",
+            "RESOURCE FOLDERS:Resource Folders are organizational units within a workspace that help manage and categorize data sources and related resources.",
+            "VALIDATION ENHANCEMENT FOR \"LOAD TO TABLE\":",
+            "SPARK COMMAND:The Spark command %%configure allows users to personalize their Spark session in both interactive notebooks and session activities, providing flexibility in data processing.",
+            "RICH DATAFRAME PREVIEW:Rich DataFrame Preview is an updated display function in Fabric that allows users to preview dataframes with enhanced features such as range specification and summary statistics.",
+            "DATA GRID:The Data Grid is a feature in Lakehouse that provides enhanced capabilities for table previews, including sorting, filtering, and resizing of columns.",
+            "MICROSOFT FABRIC RUNTIME 1.2:Microsoft Fabric Runtime 1.2 is an advanced data processing environment that includes various tools and libraries for enhanced data analytics and processing capabilities.",
+            "MULTIPLE RUNTIMES:Multiple Runtimes feature in Fabric allows users to switch between different runtime versions, ensuring compatibility and minimizing disruptions in data processing.",
+            "INTELLIGENT CACHE:The Intelligent Cache feature in Fabric Spark optimizes data processing by caching data to speed up Spark job execution.",
+            "SPARK RESOURCE USAGE ANALYSIS:Spark Resource Usage Analysis is a feature that allows users to monitor resource allocation and performance metrics for Spark applications.",
+            "REST API SUPPORT FOR SPARK JOB DEFINITION:REST Public APIs for Spark Job Definition facilitate the management and manipulation of Spark Job Definition items programmatically.",
+            "REST API SUPPORT FOR LAKEHOUSE:REST Public APIs for Lakehouse enable users to manage and manipulate Lakehouse items programmatically, enhancing integration capabilities.",
+            "MSSPARKUTILS:MSSPARKUTILS is a versatile utility designed to enhance the management and execution of notebooks, particularly within the Fabric environment. It offers a range of APIs that facilitate the management of Spark jobs and resources, streamlining workflows for users. Notably, MSSPARKUTILS includes a new runMultiple API, which enables parallel execution of tasks, thereby improving efficiency and performance in handling multiple operations simultaneously. This combination of features positions MSSPARKUTILS as a valuable tool for users looking to optimize their data processing and analysis tasks in a Spark-based ecosystem.",
+            "LAKEHOUSE MAINTENANCE JOBS:Lakehouse Maintenance Jobs are activities that manage and maintain the operational aspects of Lakehouse, ensuring data integrity and performance.",
+            "TABLE LOAD ACTIVITIES:Table Load Activities are processes that involve loading data into tables within the Lakehouse, crucial for data management and analytics.",
+            "EXECUTOR ALLOCATIONS:Executor Allocations are metrics that track the distribution of resources among Spark executors during job execution, important for performance tuning."
+        ],
+        "kwargs": {}
+    }
+}
+{
+    "type": "error",
+    "data": "Error Invoking LLM",
+    "stack": "Traceback (most recent call last):\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/base/base_llm.py\", line 144, in __call__\n    return await self._decorated_target(prompt, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/base/services/cached.py\", line 137, in invoke\n    result = await delegate(prompt, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/base/services/rate_limiter.py\", line 73, in invoke\n    async with self._limiter.use(manifest):\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/limiting/base.py\", line 31, in __aenter__\n    async with LimitContext.acquire_semaphore:\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/asyncio/locks.py\", line 14, in __aenter__\n    await self.acquire()\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/asyncio/locks.py\", line 386, in acquire\n    await fut\nasyncio.exceptions.CancelledError\n",
+    "source": "",
+    "details": {
+        "prompt": [
+            "NESTED RUNS:Nested Runs allow users to view and compare parent and child runs in ML experiments, providing a hierarchical structure for analysis.",
+            "MIP LABEL ENFORCEMENT:MIP Label Enforcement enhances support for Microsoft Information Protection labels in ML Model and Experiment items in Fabric.",
+            "PREBUILT AI SERVICES:Prebuilt AI Services in Fabric provide integration with Azure AI services, allowing users to enhance data with prebuilt AI models.",
+            "COPILOT IN NOTEBOOKS:Copilot in notebooks is a feature that accelerates productivity by providing guidance and generating code for common data tasks.",
+            "EXPERIMENT RUN:An Experiment Run is a specific execution of an experiment in machine learning, where a model is trained and evaluated on a dataset.",
+            "MODEL VERSION:A Model Version refers to a specific iteration of a machine learning model, which may include updates or changes based on new data or techniques.",
+            "AZURE AI LANGUAGE:Azure AI Language is an AI service that provides natural language processing capabilities to enhance productivity and generate code for common tasks in data exploration and preparation.",
+            "AZURE AI TRANSLATOR:Azure AI Translator is an AI service that offers translation capabilities, enabling users to translate text across multiple languages.",
+            "COPILOT IN FABRIC DATA SCIENCE:The Copilot in Fabric Data Science is a feature designed to accelerate productivity by providing helpful answers, guidance, and code generation for common tasks in notebooks.",
+            "SPARK DATAFRAMES:Spark DataFrames are a distributed collection of data organized into named columns, allowing for efficient data processing and analysis in Spark.",
+            "MLFLOW NOTEBOOK WIDGET:The MLflow Notebook Widget is a feature that enables users to track experiment runs, metrics, and parameters directly from within their notebooks.",
+            "ML MODELS:ML Models are machine learning models that have been renamed for clarity, used within the Microsoft Fabric environment for various machine learning tasks.",
+            "SYNAPSEML:SynapseML is a product experience that simplifies the building of production-ready machine learning systems on Fabric, leveraging its capabilities for data processing.",
+            "EXPLAINABLE BOOSTING MACHINES:Explainable Boosting Machines (EBM) are a machine learning technique that combines accuracy with model interpretability, powered by Apache Spark.",
+            "PREBUILT AI MODELS:Prebuilt AI Models in Microsoft Fabric are ready-to-use models that support various AI tasks, available through Azure OpenAI Service and other APIs.",
+            "SEMANTIC LINK SAMPLE NOTEBOOKS:Semantic Link Sample Notebooks are example notebooks available in the fabric-samples GitHub repository, showcasing the use of the semantic link's Python library."
+        ],
+        "kwargs": {}
+    }
+}
+{
+    "type": "error",
+    "data": "Error Invoking LLM",
+    "stack": "Traceback (most recent call last):\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/base/base_llm.py\", line 144, in __call__\n    return await self._decorated_target(prompt, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/base/services/cached.py\", line 137, in invoke\n    result = await delegate(prompt, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/base/services/rate_limiter.py\", line 73, in invoke\n    async with self._limiter.use(manifest):\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/site-packages/fnllm/limiting/base.py\", line 31, in __aenter__\n    async with LimitContext.acquire_semaphore:\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/asyncio/locks.py\", line 14, in __aenter__\n    await self.acquire()\n  File \"/opt/conda/envs/ai-agents/lib/python3.12/asyncio/locks.py\", line 386, in acquire\n    await fut\nasyncio.exceptions.CancelledError\n",
+    "source": "",
+    "details": {
+        "prompt": [
+            "CUSTOM AI APPLICATIONS:Custom AI Applications are tailored solutions built using Microsoft Fabric that leverage AI capabilities for specific business needs.",
+            "DATA SCIENCE HAPPY PATH:",
+            "QUICK TUTORIAL:Quick Tutorials are concise guides within Microsoft Fabric that provide step-by-step instructions for implementing specific data science techniques or features.",
+            "SALES FORECASTING:Sales Forecasting is an activity in data science that involves predicting future sales based on historical data, often utilizing models like SARIMAX."
+        ],
+        "kwargs": {}
+    }
+}
