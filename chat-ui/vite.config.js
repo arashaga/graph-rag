@@ -1,16 +1,15 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [react()],
     resolve: {
         preserveSymlinks: true,
-        alias: {
-            // Use proper relative path for the MSAL browser module
-            '@azure/msal-browser': path.resolve(__dirname, 'node_modules/@azure/msal-browser')
-        }
+        // Add alias to help resolve troublesome modules
+        // alias: {
+        //     '@azure/msal-browser': '/node_modules/@azure/msal-browser/dist/index.js'
+        // }
     },
     build: {
         outDir: "../backend/static",
@@ -18,7 +17,7 @@ export default defineConfig({
         sourcemap: true,
         rollupOptions: {
             output: {
-                manualChunks: (id: string) => {
+                manualChunks: id => {
                     if (id.includes("@fluentui/react-icons")) {
                         return "fluentui-icons";
                     } else if (id.includes("@fluentui/react")) {
@@ -32,9 +31,9 @@ export default defineConfig({
         target: "esnext"
     },
     server: {
-        port: 5173,
+        port: 5173, // Keep the original port
         hmr: {
-            clientPort: 5173
+            clientPort: 5173 // Ensure HMR uses the same port
         },
         proxy: {
             "/content/": "http://localhost:50505",
@@ -53,6 +52,7 @@ export default defineConfig({
     optimizeDeps: {
         include: ['@azure/msal-browser'],
         esbuildOptions: {
+            // Define global variable for browser environment compatibility
             define: {
                 global: 'globalThis'
             }
