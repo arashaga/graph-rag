@@ -177,15 +177,20 @@ class GlobalSearchTool(BaseTool):
     def _run(self, query):
         import multiprocessing
         import warnings
+        from main import global_search_pool # for testing purposes
         warnings.filterwarnings("ignore", message="This AsyncLimiter instance is being re-used across loops")
         warnings.filterwarnings("ignore", category=RuntimeWarning, message="This AsyncLimiter instance is being re-used across loops")
         try:
-            print("[DEBUG] Global search process started")
-            ctx = multiprocessing.get_context('spawn')
-            with ctx.Pool(1) as pool:
-                result = pool.apply_async(_run_global_search_process, (query,))
-                response = result.get(timeout=240)
+            result = global_search_pool.apply_async(_run_global_search_process, (query,))
+            response = result.get(timeout=240)  # or your preferred timeout
             return response
+        # try:
+        #     print("[DEBUG] Global search process started")
+        #     ctx = multiprocessing.get_context('spawn')
+        #     with ctx.Pool(1) as pool:
+        #         result = pool.apply_async(_run_global_search_process, (query,))
+        #         response = result.get(timeout=240)
+        #     return response
         except multiprocessing.TimeoutError:
             print(f"GlobalSearchTool timeout for query: {query}")
             import traceback

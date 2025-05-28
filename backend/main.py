@@ -58,7 +58,13 @@ from config import (
 )
 
 
+#######test
+from multiprocessing import Pool
 
+
+# Create a global pool with 1 or more processes at module scope
+global_search_pool = Pool(processes=2)
+##############
 
 
 app = FastAPI()
@@ -121,7 +127,7 @@ async def root():
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],  # Add both
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:5174", "http://127.0.0.1:5174"],  # Add both ports
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -147,7 +153,7 @@ async def auth_setup():
             client_id = os.getenv("AZURE_CLIENT_APP_ID", "4333edca-4f09-4892-bd0f-e3cfc1e1b33d")
             
             # For local development, modify the redirectUri to point to the local frontend
-            redirectUri = "http://localhost:5173/redirect"
+            redirectUri = "http://localhost:5174/redirect"
             
             return {
                 "useLogin": True,
@@ -176,7 +182,7 @@ async def auth_setup():
         client_id = os.getenv("AZURE_CLIENT_APP_ID", "4333edca-4f09-4892-bd0f-e3cfc1e1b33d")
         
         # For local development, modify the redirectUri to point to the local frontend
-        redirectUri = "http://localhost:5173/redirect"
+        redirectUri = "http://localhost:5174/redirect"
         
         return {
             "useLogin": True,
@@ -187,7 +193,7 @@ async def auth_setup():
                     "clientId": client_id,
                     "authority": f"https://login.microsoftonline.com/{tenant_id}",
                     "redirectUri": redirectUri,
-                    "postLogoutRedirectUri": "http://localhost:5173/",
+                    "postLogoutRedirectUri": "http://localhost:5174/",
                     "navigateToLoginRequestUrl": True,
                 },
                 "cache": {
@@ -468,6 +474,10 @@ async def config_endpoint():
         "showChatHistoryCosmos": CONFIG_CHAT_HISTORY_COSMOS_ENABLED,
         #"showAgenticRetrievalOption": CONFIG_AGENTIC_RETRIEVAL_ENABLED,
     }
+@app.on_event("shutdown")
+def shutdown_event():
+    global_search_pool.close()
+    global_search_pool.join()
 
 if __name__ == "__main__":
     import uvicorn
