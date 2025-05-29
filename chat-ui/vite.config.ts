@@ -1,16 +1,11 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [react()],
     resolve: {
         preserveSymlinks: true,
-        alias: {
-            // Use proper relative path for the MSAL browser module
-            '@azure/msal-browser': path.resolve(__dirname, 'node_modules/@azure/msal-browser')
-        }
     },
     build: {
         outDir: "../backend/static",
@@ -32,9 +27,9 @@ export default defineConfig({
         target: "esnext"
     },
     server: {
-        port: 5173,
+        port: 5174,
         hmr: {
-            clientPort: 5173
+            clientPort: 5174
         },
         proxy: {
             "/content/": "http://localhost:50505",
@@ -50,12 +45,5 @@ export default defineConfig({
             "/chat_history": "http://localhost:50505"
         }
     },
-    optimizeDeps: {
-        include: ['@azure/msal-browser'],
-        esbuildOptions: {
-            define: {
-                global: 'globalThis'
-            }
-        }
-    }
+
 });

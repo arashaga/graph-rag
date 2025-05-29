@@ -16,14 +16,18 @@ export const enum VectorFields {
     TextAndImageEmbeddings = "textAndImageEmbeddings"
 }
 
+export const enum SearchMethod {
+    Local = "local",
+    Global = "global",
+    Agentic = "agentic"
+}
+
 export type ChatAppRequestOverrides = {
     retrieval_mode?: RetrievalMode;
     semantic_ranker?: boolean;
     semantic_captions?: boolean;
-    query_rewriting?: boolean;
-    reasoning_effort?: string;
+    query_rewriting?: boolean;    reasoning_effort?: string;
     include_category?: string;
-    exclude_category?: string;
     seed?: number;
     top?: number;
     max_subqueries?: number;
@@ -42,6 +46,7 @@ export type ChatAppRequestOverrides = {
     vector_fields: VectorFields;
     language: string;
     use_agentic_retrieval: boolean;
+    search_method?: SearchMethod;
 };
 
 export type ResponseMessage = {

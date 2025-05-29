@@ -82,12 +82,10 @@
         "seed": "Seed",
         "minimumSearchScore": "Minimale zoekscore",
         "minimumRerankerScore": "Minimale reranker score",
-        "retrieveCount": "Dit aantal zoekresultaten ophalen:",
-        "includeCategory": "Categorie opnemen",
+        "retrieveCount": "Dit aantal zoekresultaten ophalen:",        "includeCategory": "Categorie opnemen",
         "includeCategoryOptions": {
             "all": "Alle"
         },
-        "excludeCategory": "Categorie uitsluiten",
         "useSemanticRanker": "Semantische rangschikking gebruiken",
         "useSemanticCaptions": "Semantische bijschriften gebruiken",
         "useQueryRewriting": "Gebruik de herformulering van zoekopdrachten om informatie op te halen",
@@ -140,11 +138,8 @@
         "rerankerScore":
              "Stelt een minimale score in voor zoekresultaten van de semantische ranker. De score varieert van 0 tot 4, waarbij een hogere score aangeeft dat het resultaat semantisch relevanter is voor de vraag.",
         "retrieveNumber":
-             "Stelt het aantal zoekresultaten in om op te halen van Azure AI zoekfunctie. Meer resultaten vergroten de kans op het juiste antwoord, maar kunnen ook leiden tot het 'lost in the middle' probleem.",
-        "includeCategory":
+             "Stelt het aantal zoekresultaten in om op te halen van Azure AI zoekfunctie. Meer resultaten vergroten de kans op het juiste antwoord, maar kunnen ook leiden tot het 'lost in the middle' probleem.",        "includeCategory":
             "Specificeert een categorie om op te nemen in de zoekresultaten. Er zijn geen categorieën in de standaard dataset.",
-        "excludeCategory":
-            "Specificeert een categorie om uit te sluiten van de zoekresultaten. Er zijn geen categorieën in de standaard dataset.",
         "useSemanticReranker":
             "Activeert de semantische ranker van Azure AI Search, een model dat zoekresultaten rangschikt op basis van semantische overeenkomst met de zoekopdracht.",
         "useSemanticCaptions":

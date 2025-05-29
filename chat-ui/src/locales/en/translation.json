@@ -1,11 +1,11 @@
 {
     "pageTitle": "Azure OpenAI + AI Search",
-    "headerTitle": "Azure OpenAI + AI Search",
-    "chat": "Chat",
+    "headerTitle": "Azure OpenAI + AI Search",    "chat": "Chat",
     "qa": "Ask a question",
     "login": "Login",
     "logout": "Logout",
     "clearChat": "Clear chat",
+    "Settings": "Settings",
     "history": {
         "chatHistory": "Chat history",
         "openChatHistory": "Open chat history",
@@ -37,17 +37,17 @@
     "chatEmptyStateTitle": "Chat with your data",
     "chatEmptyStateSubtitle": "Ask anything or try an example",
     "defaultExamples": {
-        "1": "What is included in my Northwind Health Plus plan that is not in standard?",
-        "2": "What happens in a performance review?",
-        "3": "What does a Product Manager do?",
-        "placeholder": "Type a new question (e.g. does my plan cover annual eye exams?)"
+        "1": "What is MS Fabric?",
+        "2": "What is a lakehouse?",
+        "3": "What are the latest features of MS Fabric?",
+        "placeholder": "Type a new question (e.g. what is the difference between a lakehouse and a data warehouse?)"
     },
     "askTitle": "Ask your data",
     "gpt4vExamples": {
         "1": "Compare the impact of interest rates and GDP in financial markets.",
         "2": "What is the expected trend for the S&P 500 index over the next five years? Compare it to the past S&P 500 performance",
         "3": "Can you identify any correlation between oil prices and stock market trends?",
-        "placeholder": "Example: Does my plan cover annual eye exams?"
+        "placeholder": "Example: what is the difference between a lakehouse and a data warehouse?"
     },
     "generatingAnswer": "Generating answer",
     "citationWithColon": "Citation:",
@@ -84,16 +84,16 @@
         "minimumRerankerScore": "Minimum reranker score",
         "retrieveCount": "Retrieve this many search results:",
         "maxSubqueryCount": "Max subqueries",
-        "resultsMergeStrategy": "Results merge strategy",
-        "resultsMergeStrategyOptions": {
+        "resultsMergeStrategy": "Results merge strategy",        "resultsMergeStrategyOptions": {
             "interleaved": "Interleaved",
             "descending": "Descending"
         },
-        "includeCategory": "Include category",
-        "includeCategoryOptions": {
-            "all": "All"
+        "searchMethod": "Search method",
+        "searchMethodOptions": {
+            "local": "Local",
+            "global": "Global",
+            "agentic": "Agentic"
         },
-        "excludeCategory": "Exclude category",
         "useSemanticRanker": "Use semantic ranker for retrieval",
         "useSemanticCaptions": "Use semantic captions",
         "useQueryRewriting": "Use query rewriting for retrieval",
@@ -148,13 +148,10 @@
         "retrieveNumber":
              "Sets the number of search results to retrieve from Azure AI search. More results may increase the likelihood of finding the correct answer, but may lead to the model getting 'lost in the middle'.",
         "maxSubqueryCount":
-            "Sets the maximum number of subqueries to use for the agentic retrieval query plan.",
-        "resultsMergeStrategy":
+            "Sets the maximum number of subqueries to use for the agentic retrieval query plan.",        "resultsMergeStrategy":
             "Sets the strategy for merging results from multiple subqueries. Interleaved picks the top results from each subquery in round robin order, while descending sorts all results by reranker score.",
-        "includeCategory":
-            "Specifies a category to include in the search results. There are no categories used in the default data set.",
-         "excludeCategory":
-            "Specifies a category to exclude from the search results. There are no categories used in the default data set.",
+        "searchMethod":
+            "Specifies the search method to use. Local focuses on entities and relationships near the question, Global provides high-level summaries, and Agentic combines both approaches intelligently.",
          "useSemanticReranker":
             "Enables the Azure AI Search semantic ranker, a model that re-ranks search results based on semantic similarity to the user's query.",
         "useQueryRewriting":

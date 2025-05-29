@@ -54,14 +54,54 @@ interface AuthSetup {
 
 // Fetch the auth setup JSON data from the API if not already cached
 async function fetchAuthSetup(): Promise<AuthSetup> {
-    const response = await fetch("/auth_setup");
-    if (!response.ok) {
-        throw new Error(`auth setup response was not ok: ${response.status}`);
+    try {
+        const response = await fetch("/auth_setup");
+        if (!response.ok) {
+            console.warn(`Auth setup response was not ok: ${response.status}. Using fallback auth setup.`);
+            return getFallbackAuthSetup();
+        }
+        return await response.json();
+    } catch (error) {
+        console.warn(`Error fetching auth setup: ${error}. Using fallback auth setup.`);
+        return getFallbackAuthSetup();
     }
-    return await response.json();
 }
 
-const authSetup = await fetchAuthSetup();
+// Provide a fallback configuration that doesn't require authentication
+function getFallbackAuthSetup(): AuthSetup {
+    return {
+        useLogin: false,
+        requireAccessControl: false,
+        enableUnauthenticatedAccess: true,
+        msalConfig: {
+            auth: {
+                clientId: "", 
+                authority: "",
+                redirectUri: "/redirect",
+                postLogoutRedirectUri: "/",
+                navigateToLoginRequestUrl: false,
+            },
+            cache: {
+                cacheLocation: "localStorage",
+                storeAuthStateInCookie: false,
+            },
+        },
+        loginRequest: {
+            scopes: [".default"],
+        },
+        tokenRequest: {
+            scopes: ["access_as_user"],
+        },
+    };
+}
+
+let authSetup;
+try {
+    authSetup = await fetchAuthSetup();
+} catch (error) {
+    console.error(`Failed to fetch auth setup: ${error}`);
+    authSetup = getFallbackAuthSetup();
+}
 
 export const useLogin = authSetup.useLogin;
 

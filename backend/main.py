@@ -23,6 +23,8 @@ from fastapi.responses import RedirectResponse,StreamingResponse,FileResponse
 from fastapi import APIRouter # Make sure APIRouter is imported if not already
 from pathlib import Path
 from graph_rag_module import execute_task, task_instructions # Import task_instructions
+from local_search_module import execute_local_search_task
+from global_search_module import execute_global_search_task
 from config import (
     CONFIG_AGENT_CLIENT,
     CONFIG_AGENTIC_RETRIEVAL_ENABLED,
@@ -71,11 +73,17 @@ app = FastAPI()
 
 @app.on_event("startup")
 async def startup_event():
-    # Load GraphRAG data once at startup
+    # Load GraphRAG data once at startup for all search modules
     print("🚀 Loading GraphRAG data at server startup...")
     from graph_rag_module import load_graphrag_data
-    load_graphrag_data()
-    print("✅ GraphRAG data loaded successfully!")
+    from local_search_module import load_graphrag_data as load_local_data
+    from global_search_module import load_graphrag_data as load_global_data
+    
+    # Load data for all modules
+    load_graphrag_data()  # For agentic search
+    load_local_data()     # For local search
+    load_global_data()    # For global search
+    print("✅ GraphRAG data loaded successfully for all search methods!")
     
     AZURE_TENANT_ID = os.getenv("AZURE_TENANT_ID")
     AZURE_USE_AUTHENTICATION = os.getenv("AZURE_USE_AUTHENTICATION", "").lower() == "true"
@@ -223,9 +231,22 @@ async def chat_endpoint(request: Request):
     if not question:
         return {"error": "Empty question"}
     
+    # Get search method from context.overrides, default to "local"
+    context = data.get("context", {})
+    overrides = context.get("overrides", {})
+    search_method = overrides.get("search_method", "local")
+    
     try:
-        current_task_instructions = task_instructions.format(question=question)
-        crew_output = await execute_task(current_task_instructions)
+        if search_method == "local":
+            crew_output = await execute_local_search_task(question)
+        elif search_method == "global":
+            crew_output = await execute_global_search_task(question)
+        elif search_method == "agentic":
+            current_task_instructions = task_instructions.format(question=question)
+            crew_output = await execute_task(current_task_instructions)
+        else:
+            # Default to local search
+            crew_output = await execute_local_search_task(question)
         
         # Convert CrewOutput object to string
         response = str(crew_output)
@@ -266,10 +287,23 @@ async def chat_stream_endpoint(request: Request):
     if not question:
         return {"error": "Empty question"}
 
+    # Get search method from context.overrides, default to "local"
+    context = data.get("context", {})
+    overrides = context.get("overrides", {})
+    search_method = overrides.get("search_method", "local")
+
     async def response_generator() -> AsyncGenerator[str, None]:
         try:
-            current_task_instructions = task_instructions.format(question=question)
-            crew_output = await execute_task(current_task_instructions)
+            if search_method == "local":
+                crew_output = await execute_local_search_task(question)
+            elif search_method == "global":
+                crew_output = await execute_global_search_task(question)
+            elif search_method == "agentic":
+                current_task_instructions = task_instructions.format(question=question)
+                crew_output = await execute_task(current_task_instructions)
+            else:
+                # Default to local search
+                crew_output = await execute_local_search_task(question)
             
             # Convert CrewOutput object to string
             response = str(crew_output)
@@ -300,6 +334,46 @@ async def chat_stream_endpoint(request: Request):
             yield json.dumps({"error": f"Error processing request: {str(e)}"}) + "\n"
 
     return StreamingResponse(response_generator(), media_type="application/x-ndjson")
+
+@app.post("/ask/")
+async def ask_endpoint(request: Request):
+    data = await request.json()
+    
+    # Extract the question from the request
+    question = data.get("question", "")
+    if not question:
+        return {"error": "Empty question"}
+    
+    # Get search method from overrides, default to "local"
+    overrides = data.get("overrides", {})
+    search_method = overrides.get("search_method", "local")
+    
+    try:
+        if search_method == "local":
+            crew_output = await execute_local_search_task(question)
+        elif search_method == "global":
+            crew_output = await execute_global_search_task(question)
+        elif search_method == "agentic":
+            current_task_instructions = task_instructions.format(question=question)
+            crew_output = await execute_task(current_task_instructions)
+        else:
+            # Default to local search
+            crew_output = await execute_local_search_task(question)
+        
+        # Convert CrewOutput object to string
+        response = str(crew_output)
+        
+        # Return in the format expected by the frontend
+        return {
+            "answer": response,
+            "thoughts": "",
+            "data_points": [],
+            "citation_base_url": "",
+            "session_state": data.get("session_state")
+        }
+    except Exception as e:
+        print(f"Error in ask_endpoint: {e}")
+        return {"error": f"Error processing request: {str(e)}"}
 
 @app.post("/upload/")
 async def upload_file(

@@ -87,7 +87,6 @@
         "includeCategoryOptions": {
             "all": "全て"
         },
-        "excludeCategory": "カテゴリを除外",
         "useSemanticRanker": "取得にセマンティック・ランカーを使用",
         "useSemanticCaptions": "セマンティック・キャプションを使用",
         "useQueryRewriting": "検索のためにクエリの書き換えを使用する",
@@ -142,7 +141,6 @@
         "retrieveNumber":
             "Azure AI Searchの検索結果から取得する数を設定します。結果が多ければ多いほど、正しい答えを見つける可能性は高まるかもしれませんが、モデルが「途中で迷子になる」可能性もあります。",
         "includeCategory": "検索結果に含めるカテゴリを指定します。デフォルトのデータセットはカテゴリを使用していません。",
-        "excludeCategory": "検索結果から除外するカテゴリを指定します。デフォルトのデータセットはカテゴリを使用していません。",
         "useSemanticReranker":
             "Azure AI Searchのセマンティック・ランカーを有効にします(ユーザーのクエリに対するセマンティック類似性に基づいて検索結果をリランク付けするモデル)。",
         "useSemanticCaptions":

@@ -2,17 +2,27 @@
 You are an AI assistant that helps a human analyst to perform general information discovery. Information discovery is the process of identifying and assessing relevant information associated with certain entities (e.g., organizations and individuals) within a network.
 
 # Goal
-Write a comprehensive report of a community, given a list of entities that belong to the community as well as their relationships and optional associated claims. The report will be used to inform decision-makers about information associated with the community and their potential impact. The content of this report includes an overview of the community's key entities, their legal compliance, technical capabilities, reputation, and noteworthy claims.
+Given a set of entities (such as software products, technologies, organizations, or features) and their relationships (e.g., integrations, dependencies, launches, collaborations), write a comprehensive report about this technical community. The report will inform decision-makers about the structure, capabilities, compliance, and influence of this network and any major events, partnerships, or risks.
+
+The content of this report should include:
+An overview of the community's main entities (e.g., Microsoft Fabric, Data Warehouse, Power BI, Real-Time Intelligence, Eventstream)
+Noteworthy integrations, capabilities, and technical advancements
+Recent or significant product launches, features, or certifications
+Relationships and interactions among technologies and organizations
+Potential business or technical impact, compliance posture, and reputational highlights
 
 # Report Structure
+The report must contain these sections:
 
-The report should include the following sections:
+-TITLE: Community name summarizing its central entities (should be concise but specific; include representative named entities)
 
-- TITLE: community's name that represents its key entities - title should be short but specific. When possible, include representative named entities in the title.
-- SUMMARY: An executive summary of the community's overall structure, how its entities are related to each other, and significant information associated with its entities.
-- IMPACT SEVERITY RATING: a float score between 0-10 that represents the severity of IMPACT posed by entities within the community.  IMPACT is the scored importance of a community.
-- RATING EXPLANATION: Give a single sentence explanation of the IMPACT severity rating.
-- DETAILED FINDINGS: A list of 5-10 key insights about the community. Each insight should have a short summary followed by multiple paragraphs of explanatory text grounded according to the grounding rules below. Be comprehensive.
+-SUMMARY: Executive summary of the network, explaining how entities are related, and highlighting critical or recent information
+
+-IMPACT SEVERITY RATING: A float score from 0–10 indicating the importance or impact of the community (reflecting business, technology, compliance, or reputational impact)
+
+-RATING EXPLANATION: One-sentence explanation for the impact severity rating
+
+-DETAILED FINDINGS: List 5–10 key insights about the network. Each insight should have a short summary and explanatory paragraphs with references to the supporting data, using the grounding format below. Be comprehensive and focus on actionable or decision-relevant observations.
 
 Return output as a well-formed JSON-formatted string with the following format:
     {{
@@ -56,18 +66,20 @@ Text:
 Entities
 
 id,entity,description
-5,VERDANT OASIS PLAZA,Verdant Oasis Plaza is the location of the Unity March
-6,HARMONY ASSEMBLY,Harmony Assembly is an organization that is holding a march at Verdant Oasis Plaza
+Entities
+id,entity,description
+5,Microsoft Fabric,All-in-one analytics platform
+6,Power BI,Data visualization and analytics tool
 
 Relationships
-
 id,source,target,description
-37,VERDANT OASIS PLAZA,UNITY MARCH,Verdant Oasis Plaza is the location of the Unity March
-38,VERDANT OASIS PLAZA,HARMONY ASSEMBLY,Harmony Assembly is holding a march at Verdant Oasis Plaza
-39,VERDANT OASIS PLAZA,UNITY MARCH,The Unity March is taking place at Verdant Oasis Plaza
-40,VERDANT OASIS PLAZA,TRIBUNE SPOTLIGHT,Tribune Spotlight is reporting on the Unity march taking place at Verdant Oasis Plaza
-41,VERDANT OASIS PLAZA,BAILEY ASADI,Bailey Asadi is speaking at Verdant Oasis Plaza about the march
-43,HARMONY ASSEMBLY,UNITY MARCH,Harmony Assembly is organizing the Unity March
+23,Microsoft Fabric,Power BI,Power BI is a core visualization tool in Fabric
+
+Features
+id,feature,description
+8,Delta Lake,Open data lake format supported by Fabric
+
+
 
 Output:
 {{

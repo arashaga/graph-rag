@@ -4,7 +4,7 @@ import { TextField, ITextFieldProps, Checkbox, ICheckboxProps, Dropdown, IDropdo
 import { HelpCallout } from "../HelpCallout";
 import { GPT4VSettings } from "../GPT4VSettings";
 import { VectorSettings } from "../VectorSettings";
-import { RetrievalMode, VectorFields, GPT4VInput } from "../../api";
+import { RetrievalMode, VectorFields, GPT4VInput, SearchMethod } from "../../api";
 import styles from "./Settings.module.css";
 
 // Add type for onRenderLabel
@@ -20,11 +20,9 @@ export interface SettingsProps {
     minimumSearchScore: number;
     minimumRerankerScore: number;
     useSemanticRanker: boolean;
-    useSemanticCaptions: boolean;
-    useQueryRewriting: boolean;
+    useSemanticCaptions: boolean;    useQueryRewriting: boolean;
     reasoningEffort: string;
-    excludeCategory: string;
-    includeCategory: string;
+    searchMethod: SearchMethod;
     retrievalMode: RetrievalMode;
     useGPT4V: boolean;
     gpt4vInput: GPT4VInput;
@@ -59,13 +57,11 @@ export const Settings = ({
     resultsMergeStrategy,
     seed,
     minimumSearchScore,
-    minimumRerankerScore,
-    useSemanticRanker,
-    useSemanticCaptions,
+    minimumRerankerScore,    
+    useSemanticRanker,    useSemanticCaptions,
     useQueryRewriting,
     reasoningEffort,
-    excludeCategory,
-    includeCategory,
+    searchMethod,
     retrievalMode,
     useGPT4V,
     gpt4vInput,
@@ -108,13 +104,11 @@ export const Settings = ({
     const rerankerScoreFieldId = useId("rerankerScoreField");
     const retrieveCountId = useId("retrieveCount");
     const retrieveCountFieldId = useId("retrieveCountField");
-    const maxSubqueryCountId = useId("maxSubqueryCount");
-    const maxSubqueryCountFieldId = useId("maxSubqueryCountField");
-    const resultsMergeStrategyFieldId = useId("resultsMergeStrategy");
-    const includeCategoryId = useId("includeCategory");
-    const includeCategoryFieldId = useId("includeCategoryField");
-    const excludeCategoryId = useId("excludeCategory");
-    const excludeCategoryFieldId = useId("excludeCategoryField");
+    const maxSubqueryCountId = useId("maxSubqueryCount");    const maxSubqueryCountFieldId = useId("maxSubqueryCountField");
+    const resultsMergeStrategyId = useId("resultsMergeStrategy");
+    const resultsMergeStrategyFieldId = useId("resultsMergeStrategyField");
+    const searchMethodId = useId("searchMethod");
+    const searchMethodFieldId = useId("searchMethodField");
     const semanticRankerId = useId("semanticRanker");
     const semanticRankerFieldId = useId("semanticRankerField");
     const queryRewritingFieldId = useId("queryRewritingField");
@@ -238,13 +232,12 @@ export const Settings = ({
                     selectedKey={resultsMergeStrategy}
                     onChange={(_ev?: React.FormEvent<HTMLElement | HTMLInputElement>, option?: IDropdownOption) =>
                         onChange("resultsMergeStrategy", option?.key)
-                    }
-                    aria-labelledby={includeCategoryId}
+                    }                    aria-labelledby={resultsMergeStrategyId}
                     options={[
                         { key: "interleaved", text: t("labels.resultsMergeStrategyOptions.interleaved") },
                         { key: "descending", text: t("labels.resultsMergeStrategyOptions.descending") }
                     ]}
-                    onRenderLabel={props => renderLabel(props, includeCategoryId, includeCategoryFieldId, t("helpTexts.resultsMergeStrategy"))}
+                    onRenderLabel={props => renderLabel(props, resultsMergeStrategyId, resultsMergeStrategyFieldId, t("helpTexts.resultsMergeStrategy"))}
                 />
             )}
 
@@ -259,30 +252,19 @@ export const Settings = ({
                 onChange={(_ev, val) => onChange("retrieveCount", parseInt(val || "3"))}
                 aria-labelledby={retrieveCountId}
                 onRenderLabel={props => renderLabel(props, retrieveCountId, retrieveCountFieldId, t("helpTexts.retrieveNumber"))}
-            />
-
-            <Dropdown
-                id={includeCategoryFieldId}
+            />            <Dropdown
+                id={searchMethodFieldId}
                 className={styles.settingsSeparator}
-                label={t("labels.includeCategory")}
-                selectedKey={includeCategory}
-                onChange={(_ev?: React.FormEvent<HTMLElement | HTMLInputElement>, option?: IDropdownOption) => onChange("includeCategory", option?.key || "")}
-                aria-labelledby={includeCategoryId}
+                label={t("labels.searchMethod")}
+                selectedKey={searchMethod}
+                onChange={(_ev?: React.FormEvent<HTMLElement | HTMLInputElement>, option?: IDropdownOption) => onChange("searchMethod", option?.key || SearchMethod.Local)}
+                aria-labelledby={searchMethodId}
                 options={[
-                    { key: "", text: t("labels.includeCategoryOptions.all") }
-                    // { key: "example", text: "Example Category" } // Add more categories as needed
+                    { key: SearchMethod.Local, text: t("labels.searchMethodOptions.local") },
+                    { key: SearchMethod.Global, text: t("labels.searchMethodOptions.global") },
+                    { key: SearchMethod.Agentic, text: t("labels.searchMethodOptions.agentic") }
                 ]}
-                onRenderLabel={props => renderLabel(props, includeCategoryId, includeCategoryFieldId, t("helpTexts.includeCategory"))}
-            />
-
-            <TextField
-                id={excludeCategoryFieldId}
-                className={styles.settingsSeparator}
-                label={t("labels.excludeCategory")}
-                defaultValue={excludeCategory}
-                onChange={(_ev, val) => onChange("excludeCategory", val || "")}
-                aria-labelledby={excludeCategoryId}
-                onRenderLabel={props => renderLabel(props, excludeCategoryId, excludeCategoryFieldId, t("helpTexts.excludeCategory"))}
+                onRenderLabel={props => renderLabel(props, searchMethodId, searchMethodFieldId, t("helpTexts.searchMethod"))}
             />
 
             {showSemanticRankerOption && !useAgenticRetrieval && (

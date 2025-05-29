@@ -34,3 +34,13 @@ set these otherwise youet errors:
     Auto Tuning:
     graphrag prompt-tune --root ./notebooks --config ./notebooks/settings.yaml --domain "tehcnology" --output ./notebooks/prompt-tuned
     then chage the folders in the settings yaml to point to these prompts
+
+    to start the frontend
+    yarn dev --host 0.0.0.0
+
+
+---------------------
+in the UI add the navigation and make sure it uses fluent UI
+you need to make sure to add /auth_setup in the backend to be able to run the app
+
+make sure to register web app with redirect URL

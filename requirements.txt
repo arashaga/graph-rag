@@ -8,3 +8,5 @@ graphrag
 pdfplumber
 uvicorn
 python-multipart
+quart
+crewai

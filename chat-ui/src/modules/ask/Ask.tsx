@@ -5,7 +5,7 @@ import { Panel, DefaultButton, Spinner } from "@fluentui/react";
 
 import styles from "./Ask.module.css";
 
-import { askApi, configApi, ChatAppResponse, ChatAppRequest, RetrievalMode, VectorFields, GPT4VInput, SpeechConfig } from "../../api";
+import { askApi, configApi, ChatAppResponse, ChatAppRequest, RetrievalMode, VectorFields, GPT4VInput, SpeechConfig, SearchMethod } from "../../api";
 import { Answer, AnswerError } from "../../components/Answer";
 import { QuestionInput } from "../../components/QuestionInput";
 import { ExampleList } from "../../components/Example";
@@ -36,10 +36,8 @@ export function Component(): JSX.Element {
     const [useSemanticCaptions, setUseSemanticCaptions] = useState<boolean>(false);
     const [useQueryRewriting, setUseQueryRewriting] = useState<boolean>(false);
     const [reasoningEffort, setReasoningEffort] = useState<string>("");
-    const [useGPT4V, setUseGPT4V] = useState<boolean>(false);
-    const [gpt4vInput, setGPT4VInput] = useState<GPT4VInput>(GPT4VInput.TextAndImages);
-    const [includeCategory, setIncludeCategory] = useState<string>("");
-    const [excludeCategory, setExcludeCategory] = useState<string>("");
+    const [useGPT4V, setUseGPT4V] = useState<boolean>(false);    const [gpt4vInput, setGPT4VInput] = useState<GPT4VInput>(GPT4VInput.TextAndImages);
+    const [searchMethod, setSearchMethod] = useState<SearchMethod>(SearchMethod.Local);
     const [question, setQuestion] = useState<string>("");
     const [vectorFields, setVectorFields] = useState<VectorFields>(VectorFields.TextAndImageEmbeddings);
     const [useOidSecurityFilter, setUseOidSecurityFilter] = useState<boolean>(false);
@@ -134,10 +132,8 @@ export function Component(): JSX.Element {
                 context: {
                     overrides: {
                         prompt_template: promptTemplate.length === 0 ? undefined : promptTemplate,
-                        prompt_template_prefix: promptTemplatePrefix.length === 0 ? undefined : promptTemplatePrefix,
-                        prompt_template_suffix: promptTemplateSuffix.length === 0 ? undefined : promptTemplateSuffix,
-                        include_category: includeCategory.length === 0 ? undefined : includeCategory,
-                        exclude_category: excludeCategory.length === 0 ? undefined : excludeCategory,
+                        prompt_template_prefix: promptTemplatePrefix.length === 0 ? undefined : promptTemplatePrefix,                        prompt_template_suffix: promptTemplateSuffix.length === 0 ? undefined : promptTemplateSuffix,
+                        search_method: searchMethod,
                         top: retrieveCount,
                         max_subqueries: maxSubqueryCount,
                         results_merge_strategy: resultsMergeStrategy,
@@ -212,15 +208,10 @@ export function Component(): JSX.Element {
                 break;
             case "useQueryRewriting":
                 setUseQueryRewriting(value);
-                break;
-            case "reasoningEffort":
+                break;            case "reasoningEffort":
                 setReasoningEffort(value);
-                break;
-            case "excludeCategory":
-                setExcludeCategory(value);
-                break;
-            case "includeCategory":
-                setIncludeCategory(value);
+                break;            case "searchMethod":
+                setSearchMethod(value);
                 break;
             case "useOidSecurityFilter":
                 setUseOidSecurityFilter(value);
@@ -360,11 +351,8 @@ export function Component(): JSX.Element {
                     minimumSearchScore={minimumSearchScore}
                     minimumRerankerScore={minimumRerankerScore}
                     useSemanticRanker={useSemanticRanker}
-                    useSemanticCaptions={useSemanticCaptions}
-                    useQueryRewriting={useQueryRewriting}
-                    reasoningEffort={reasoningEffort}
-                    excludeCategory={excludeCategory}
-                    includeCategory={includeCategory}
+                    useSemanticCaptions={useSemanticCaptions}                    useQueryRewriting={useQueryRewriting}
+                    reasoningEffort={reasoningEffort}                    searchMethod={searchMethod}
                     retrievalMode={retrievalMode}
                     useGPT4V={useGPT4V}
                     gpt4vInput={gpt4vInput}

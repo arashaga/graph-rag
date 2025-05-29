@@ -82,12 +82,10 @@
         "seed": "Seed",
         "minimumSearchScore": "Punteggio minimo di ricerca",
         "minimumRerankerScore": "Punteggio minimo del reranker semantico",
-        "retrieveCount": "Recupera questo numero di risultati di ricerca:",
-        "includeCategory": "Includi categoria",
+        "retrieveCount": "Recupera questo numero di risultati di ricerca:",        "includeCategory": "Includi categoria",
         "includeCategoryOptions": {
             "all": "Tutte"
         },
-        "excludeCategory": "Escludi categoria",
         "useSemanticRanker": "Usa il reranker semantico",
         "useSemanticCaptions": "Usa didascalie semantiche",
         "useQueryRewriting": "Usa la riscrittura delle query per il recupero",
@@ -141,11 +139,8 @@
         "rerankerScore":
             "Imposta un punteggio minimo per i risultati di ricerca provenienti dal reranker semantico. Il punteggio varia sempre tra 0 e 4. Più alto è il punteggio, più il risultato è semanticamente rilevante rispetto alla domanda.",
         "retrieveNumber":
-            "Imposta il numero di risultati di ricerca da recuperare da Azure AI Search. Più risultati possono aumentare la probabilità di trovare la risposta giusta, ma possono portare il modello a 'perdersi nel mezzo'.",
-        "includeCategory":
+            "Imposta il numero di risultati di ricerca da recuperare da Azure AI Search. Più risultati possono aumentare la probabilità di trovare la risposta giusta, ma possono portare il modello a 'perdersi nel mezzo'.",        "includeCategory":
             "Specifica una categoria da includere nei risultati di ricerca. Non ci sono categorie utilizzate nel set di dati predefinito.",
-        "excludeCategory":
-            "Specifica una categoria da escludere dai risultati di ricerca. Non ci sono categorie utilizzate nel set di dati predefinito.",
         "useSemanticReranker":
             "Abilita il ranking semantico di Azure AI Search, un modello che riordina i risultati di ricerca in base alla somiglianza semantica con la query dell'utente.",
         "useSemanticCaptions":

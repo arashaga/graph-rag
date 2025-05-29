@@ -17,7 +17,8 @@ import {
     ResponseMessage,
     VectorFields,
     GPT4VInput,
-    SpeechConfig
+    SpeechConfig,
+    SearchMethod
 } from "../../api";
 import { Answer, AnswerError, AnswerLoading } from "../../components/Answer";
 import { QuestionInput } from "../../components/QuestionInput";
@@ -55,8 +56,7 @@ const Chat = () => {
     const [streamingEnabled, setStreamingEnabled] = useState<boolean>(true);
     const [shouldStream, setShouldStream] = useState<boolean>(true);
     const [useSemanticCaptions, setUseSemanticCaptions] = useState<boolean>(false);
-    const [includeCategory, setIncludeCategory] = useState<string>("");
-    const [excludeCategory, setExcludeCategory] = useState<string>("");
+    const [searchMethod, setSearchMethod] = useState<SearchMethod>(SearchMethod.Local);
     const [useSuggestFollowupQuestions, setUseSuggestFollowupQuestions] = useState<boolean>(false);
     const [vectorFields, setVectorFields] = useState<VectorFields>(VectorFields.TextAndImageEmbeddings);
     const [useOidSecurityFilter, setUseOidSecurityFilter] = useState<boolean>(false);
@@ -216,8 +216,7 @@ const Chat = () => {
                 context: {
                     overrides: {
                         prompt_template: promptTemplate.length === 0 ? undefined : promptTemplate,
-                        include_category: includeCategory.length === 0 ? undefined : includeCategory,
-                        exclude_category: excludeCategory.length === 0 ? undefined : excludeCategory,
+                        search_method: searchMethod,
                         top: retrieveCount,
                         max_subqueries: maxSubqueryCount,
                         results_merge_strategy: resultsMergeStrategy,
@@ -333,11 +332,8 @@ const Chat = () => {
             case "useSemanticCaptions":
                 setUseSemanticCaptions(value);
                 break;
-            case "excludeCategory":
-                setExcludeCategory(value);
-                break;
-            case "includeCategory":
-                setIncludeCategory(value);
+            case "searchMethod":
+                setSearchMethod(value);
                 break;
             case "useOidSecurityFilter":
                 setUseOidSecurityFilter(value);
@@ -551,8 +547,7 @@ const Chat = () => {
                         useSemanticCaptions={useSemanticCaptions}
                         useQueryRewriting={useQueryRewriting}
                         reasoningEffort={reasoningEffort}
-                        excludeCategory={excludeCategory}
-                        includeCategory={includeCategory}
+                        searchMethod={searchMethod}
                         retrievalMode={retrievalMode}
                         useGPT4V={useGPT4V}
                         gpt4vInput={gpt4vInput}

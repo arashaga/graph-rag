@@ -82,12 +82,10 @@
         "seed": "Seed",
         "minimumSearchScore": "Minimum arama skoru",
         "minimumRerankerScore": "Minimum yeniden sıralayıcı skoru",
-        "retrieveCount": "Bu kadar arama sonucu getir:",
-        "includeCategory": "Kategori dahil et",
+        "retrieveCount": "Bu kadar arama sonucu getir:",        "includeCategory": "Kategori dahil et",
         "includeCategoryOptions": {
             "all": "Hepsi"
         },
-        "excludeCategory": "Kategori hariç tut",
         "useSemanticRanker": "Anlamsal sıralayıcı kullan",
         "useSemanticCaptions": "Anlamsal altyazılar kullan",
         "useQueryRewriting": "Bilgi erişimi için sorgu yeniden yazımını kullanın",
@@ -140,11 +138,8 @@
         "rerankerScore":
              "Anlamsal sıralayıcıdan gelen arama sonuçları için minimum skoru ayarlar. Skor her zaman 0-4 arasında değişir. Daha yüksek skor, sonucun soruya daha anlamsal olarak uygun olduğunu gösterir.",
         "retrieveNumber":
-             "Azure AI arama sonuçlarından getirilecek sonuç sayısını ayarlar. Daha fazla sonuç doğru cevabı bulma olasılığını artırabilir, ancak modelin 'ortada kaybolmasına' da neden olabilir.",
-        "includeCategory":
+             "Azure AI arama sonuçlarından getirilecek sonuç sayısını ayarlar. Daha fazla sonuç doğru cevabı bulma olasılığını artırabilir, ancak modelin 'ortada kaybolmasına' da neden olabilir.",        "includeCategory":
             "Arama sonuçlarına dahil edilecek bir kategoriyi belirtir. Varsayılan veri setinde kategori yoktur.",
-        "excludeCategory":
-            "Arama sonuçlarından hariç tutulacak bir kategoriyi belirtir. Varsayılan veri setinde kategori yoktur.",
         "useSemanticReranker":
             "Azure AI Arama anlamsal sıralayıcısını etkinleştirir, bu model arama sonuçlarını kullanıcının sorgusuna anlamsal benzerliğe göre sıralar.",
         "useSemanticCaptions":

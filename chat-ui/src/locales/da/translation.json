@@ -83,7 +83,6 @@
         "includeCategoryOptions": {
             "all": "Alle"
         },
-        "excludeCategory": "Ekskludér kategori",
         "useSemanticRanker": "Brug semantisk ranking til søgning",
         "useSemanticCaptions": "Brug semantiske billedtekster",
         "useQueryRewriting": "Brug forespørgselsomskrivning til informationsgenfinding",
@@ -132,7 +131,6 @@
         "rerankerScore": "Indstiller en minimumscore for søgeresultater fra den semantiske omrangør. Scoren ligger altid mellem 0-4. Jo højere score, jo mere semantisk relevant er resultatet for spørgsmålet.",
         "retrieveNumber": "Indstiller antallet af søgeresultater, der skal hentes fra Azure AI Search. Flere resultater kan øge sandsynligheden for at finde det korrekte svar, men kan få modellen til at 'fare vild i midten' (eng: lost in the middle).",
         "includeCategory": "Angiver en kategori, der skal inkluderes i søgeresultaterne. Der er ingen kategorier i det standard datasæt.",
-        "excludeCategory": "Angiver en kategori, der skal ekskluderes fra søgeresultaterne. Der er ingen kategorier i det standard datasæt.",
         "useSemanticReranker": "Aktiverer Azure AI Search semantisk omrangør, en model der rangerer søgeresultater baseret på semantisk lighed til brugerens forespørgsel.",
         "useSemanticCaptions": "Sender semantiske billedtekster til LLM'en i stedet for hele søgeresultatet. En semantisk billedtekst udtrækkes fra et søgeresultat under processen med semantisk rangering.",
         "useQueryRewriting": "Aktiverer Azure AI Search forespørgselsomskrivning, en proces der ændrer brugerens forespørgsel for at forbedre søgeresultaterne. Kræver at semantisk ranking er aktiveret.",
