@@ -1,6 +1,7 @@
 import json
 import os
 import shutil
+import platform
 from typing import AsyncGenerator
 import uuid
 import mimetypes
@@ -61,11 +62,11 @@ from config import (
 
 
 #######test
-from multiprocessing import Pool
+from multiprocessing import Pool, freeze_support
+import platform
 
-
-# Create a global pool with 1 or more processes at module scope
-global_search_pool = Pool(processes=2)
+# Initialize pool as None at module level
+global_search_pool = None
 ##############
 
 
@@ -73,6 +74,12 @@ app = FastAPI()
 
 @app.on_event("startup")
 async def startup_event():
+    global global_search_pool
+    
+    # Initialize multiprocessing pool safely
+    if global_search_pool is None:
+        global_search_pool = Pool(processes=2)
+    
     # Load GraphRAG data once at startup for all search modules
     print("🚀 Loading GraphRAG data at server startup...")
     from graph_rag_module import load_graphrag_data
@@ -550,10 +557,17 @@ async def config_endpoint():
     }
 @app.on_event("shutdown")
 def shutdown_event():
-    global_search_pool.close()
-    global_search_pool.join()
+    global global_search_pool
+    if global_search_pool is not None:
+        global_search_pool.close()
+        global_search_pool.join()
+        global_search_pool = None
 
 if __name__ == "__main__":
+    # Support for Windows multiprocessing
+    if platform.system() == "Windows":
+        freeze_support()
+    
     import uvicorn
     print("Starting FastAPI server on http://localhost:50505")
     uvicorn.run(app, host="0.0.0.0", port=50505)

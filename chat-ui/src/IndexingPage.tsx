@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import styles from "./IndexingPage.module.css";
 
 type IndexingStatus = "pending" | "in_progress" | "completed" | "error" | null;
 
-const API_BASE = "http://localhost:8000"; // Change if needed
+const API_BASE = "http://localhost:50505"; // Updated to match backend port
 const JOBID_STORAGE_KEY = "currentIndexingJobId";
 
 export default function IndexingPage() {
@@ -13,7 +14,7 @@ export default function IndexingPage() {
   const [status, setStatus] = useState<IndexingStatus>(null);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const pollingRef = useRef<NodeJS.Timeout | null>(null);
+  const pollingRef = useRef<number | null>(null);
   const [indexName, setIndexName] = useState("");
 
   // On mount: check for unfinished job in localStorage and resume polling
@@ -33,7 +34,7 @@ export default function IndexingPage() {
   const pollStatus = (id: string) => {
     if (pollingRef.current) clearInterval(pollingRef.current);
     setStatus("pending");
-    pollingRef.current = setInterval(async () => {
+    pollingRef.current = window.setInterval(async () => {
       try {
         const res = await axios.get(`${API_BASE}/status/${id}`);
         setStatus(res.data.status);
@@ -105,118 +106,161 @@ export default function IndexingPage() {
     setError(null);
     if (pollingRef.current) clearInterval(pollingRef.current);
     localStorage.removeItem(JOBID_STORAGE_KEY);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   // Disable upload/reset when a job is active
-  const jobActive = jobId && status && status !== "completed" && status !== "error";
+  const jobActive = Boolean(jobId && status && status !== "completed" && status !== "error");
+
+  const getStatusIcon = () => {
+    switch (status) {
+      case "completed":
+        return (
+          <svg className={styles.statusIcon} viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" fill="#10b981" />
+            <path d="m9 12 2 2 4-4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        );
+      case "error":
+        return (
+          <svg className={styles.statusIcon} viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" fill="#ef4444" />
+            <path d="m15 9-6 6m0-6 6 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        );
+      case "in_progress":
+      case "pending":
+        return (
+          <svg className={`${styles.statusIcon} ${styles.spinner}`} viewBox="0 0 24 24">
+            <circle className={styles.spinnerTrack} cx="12" cy="12" r="10" stroke="#e5e7eb" strokeWidth="2" fill="none" />
+            <circle className={styles.spinnerPath} cx="12" cy="12" r="10" stroke="#3b82f6" strokeWidth="2" fill="none" />
+          </svg>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
-      <div className="bg-white p-6 rounded-2xl shadow-md w-full max-w-md">
-        <h2 className="text-xl font-bold mb-4">Index a .txt File</h2>
-
-        <div className="mb-4">
-          <label className="block mb-2 text-sm">Choose file</label>
-          <input
-            type="file"
-            accept=".txt"
-            ref={fileInputRef}
-            onChange={handleFileSelect}
-            disabled={jobActive}
-            className={"block w-full border p-2 rounded" + (jobActive ? "opacity-50 cursor-not-allowed" : "")}
-          />
-          {file && (
-            <span className="text-sm text-gray-600 mt-1 block">{file.name}</span>
-          )}
+    <div className={styles.pageContainer}>
+      <div className={styles.cardContainer}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Document Indexing</h1>
+          <p className={styles.subtitle}>Upload and index your .txt files for AI-powered search</p>
         </div>
 
-        <div className="mb-4">
-          <label className="block mb-2 text-sm">Indexing Method</label>
-          <select
-            value={method}
-            onChange={e => setMethod(e.target.value as "Standard" | "Fast")}
-            className={"w-full border p-2 rounded"+ (jobActive ? "opacity-50 cursor-not-allowed" : "")}
-            disabled={jobActive}
-
-          >
-            <option value="Standard">Standard (Default)</option>
-            <option value="Fast">Fast</option>
-          </select>
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2 text-sm">Index Name</label>
-          <input
-            type="text"
-            value={indexName}
-            onChange={e => setIndexName(e.target.value)}
-            className={"w-full border p-2 rounded"+ (jobActive ? "opacity-50 cursor-not-allowed" : "")}
-            disabled={jobActive}
-            maxLength={32}
-            placeholder="e.g. alice_index"
-            required
-          />
-        </div>
-
-        <button
-          className={"w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700"+ (jobActive ? "opacity-50 cursor-not-allowed" : "")}
-          onClick={handleUpload}
-          disabled={!file || jobActive}
-        >
-          Start Indexing
-        </button>
-
-        <button
-          className={"w-full mt-2 bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded hover:bg-gray-300"+ (jobActive ? "opacity-50 cursor-not-allowed" : "")}
-          onClick={reset}
-          disabled={jobActive}
-        >
-          Reset
-        </button>
-
-        {status && (
-          <div className="mt-4">
-            <div className="flex items-center space-x-2">
-              <span className="font-semibold">Status:</span>
-              <span
-                className={
-                  status === "completed"
-                    ? "text-green-600"
-                    : status === "error"
-                    ? "text-red-600"
-                    : "text-yellow-600"
-                }
+        <div className={styles.formContainer}>
+          {/* File Upload Section */}
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>Choose Document</label>
+            <div className={styles.fileInputContainer}>
+              <input
+                type="file"
+                accept=".txt"
+                ref={fileInputRef}
+                onChange={handleFileSelect}
+                disabled={jobActive}
+                className={styles.fileInput}
+                id="file-upload"
+              />
+              <label
+                htmlFor="file-upload"
+                className={`${styles.fileInputLabel} ${jobActive ? styles.disabled : ''}`}
               >
-                {status.charAt(0).toUpperCase() + status.slice(1).replace("_", " ")}
-              </span>
-              {status === "in_progress" && (
-                <svg
-                  className="animate-spin h-5 w-5 text-yellow-600"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                    fill="none"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                  />
+                <svg className={styles.uploadIcon} viewBox="0 0 24 24" fill="none">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <polyline points="7,10 12,15 17,10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
+                {file ? file.name : 'Choose .txt file'}
+              </label>
+            </div>
+          </div>
+
+          {/* Index Name */}
+          <div className={styles.inputGroup}>
+            <label className={styles.label} htmlFor="index-name">Index Name</label>
+            <input
+              id="index-name"
+              type="text"
+              value={indexName}
+              onChange={e => setIndexName(e.target.value)}
+              className={`${styles.textInput} ${jobActive ? styles.disabled : ''}`}
+              disabled={jobActive}
+              maxLength={32}
+              placeholder="e.g. my_document_index"
+              required
+            />
+          </div>
+
+          {/* Method Selection */}
+          <div className={styles.inputGroup}>
+            <label className={styles.label} htmlFor="method-select">Indexing Method</label>
+            <select
+              id="method-select"
+              value={method}
+              onChange={e => setMethod(e.target.value as "Standard" | "Fast")}
+              className={`${styles.selectInput} ${jobActive ? styles.disabled : ''}`}
+              disabled={jobActive}
+            >
+              <option value="Standard">Standard (Recommended)</option>
+              <option value="Fast">Fast (Quick processing)</option>
+            </select>
+          </div>
+
+          {/* Action Buttons */}
+          <div className={styles.buttonGroup}>
+            <button
+              className={`${styles.primaryButton} ${(!file || jobActive) ? styles.disabled : ''}`}
+              onClick={handleUpload}
+              disabled={!file || jobActive}
+            >
+              {status === "in_progress" ? "Processing..." : "Start Indexing"}
+            </button>
+            <button
+              className={`${styles.secondaryButton} ${jobActive ? styles.disabled : ''}`}
+              onClick={reset}
+              disabled={jobActive}
+            >
+              Reset
+            </button>
+          </div>
+
+          {/* Status Display */}
+          {status && (
+            <div className={styles.statusContainer}>
+              <div className={styles.statusHeader}>
+                {getStatusIcon()}
+                <div className={styles.statusInfo}>
+                  <span className={styles.statusLabel}>Status</span>
+                  <span className={`${styles.statusText} ${styles[status]}`}>
+                    {status.charAt(0).toUpperCase() + status.slice(1).replace("_", " ")}
+                  </span>
+                </div>
+              </div>
+              {jobId && (
+                <div className={styles.jobId}>
+                  <span className={styles.jobIdLabel}>Job ID:</span>
+                  <code className={styles.jobIdValue}>{jobId}</code>
+                </div>
               )}
             </div>
-            {jobId && <div className="text-xs text-gray-400 mt-1">Job ID: {jobId}</div>}
-          </div>
-        )}
+          )}
 
-        {error && (
-          <div className="mt-4 text-red-600 font-semibold">{error}</div>
-        )}
+          {/* Error Display */}
+          {error && (
+            <div className={styles.errorContainer}>
+              <svg className={styles.errorIcon} viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="#ef4444" strokeWidth="2" />
+                <line x1="15" y1="9" x2="9" y2="15" stroke="#ef4444" strokeWidth="2" />
+                <line x1="9" y1="9" x2="15" y2="15" stroke="#ef4444" strokeWidth="2" />
+              </svg>
+              <span className={styles.errorText}>{error}</span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

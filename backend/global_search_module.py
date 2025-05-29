@@ -130,6 +130,7 @@ class GlobalSearchTool(BaseTool):
             import traceback
             traceback.print_exc()
             return f"I'm sorry, there was an error processing your request: {str(e)}"
+            return f"I'm sorry, there was an error processing your request: {str(e)}"
 
 def _run_global_search_process(query):
     import uuid

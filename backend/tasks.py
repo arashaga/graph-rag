@@ -15,9 +15,13 @@ import os
 JOB_STATUS = {}
 
 def load_settings(settings_path: str, job_folder: str) -> GraphRagConfig:
-    import yaml
+    print(f"Loading settings from: {settings_path}")
+    print(f"Job folder: {job_folder}")
+    
     with open(settings_path, "r") as f:
         settings_dict = yaml.safe_load(f)
+    
+    print(f"Loaded settings_dict: {settings_dict.get('models', {})}")
     
     # Set both input and output dirs to the job folder
     settings_dict['input']['base_dir'] = job_folder
@@ -39,7 +43,9 @@ def run_indexing_sync(job_folder: str, method: IndexingMethod):
     """Synchronous wrapper for async build_index."""
     import asyncio
 
-    config = load_settings("settings.yaml", job_folder)
+    # Use absolute path to settings.yaml in the backend directory
+    settings_path = os.path.join(os.path.dirname(__file__), "settings.yaml")
+    config = load_settings(settings_path, job_folder)
 
     async def _build():
         from graphrag.index.typing.pipeline_run_result import PipelineRunResult
@@ -69,6 +75,7 @@ def run_indexing_sync(job_folder: str, method: IndexingMethod):
 def start_indexing(job_id, job_folder , method):
     """Runs the indexing, updates JOB_STATUS for UI polling."""
     try:
+        print(f"Starting indexing for job {job_id} in folder {job_folder} with method {method}")
         JOB_STATUS[job_id] = {"status": "in_progress"}
         method_enum = IndexingMethod.Standard if method == "Standard" else IndexingMethod.Fast
 
@@ -76,9 +83,15 @@ def start_indexing(job_id, job_folder , method):
         errors = [r.errors for r in results if getattr(r, "errors", None)]
 
         if errors and any(errors):
+            print(f"Indexing completed with errors for job {job_id}: {errors}")
             JOB_STATUS[job_id] = {"status": "error", "details": str(errors)}
         else:
+            print(f"Indexing completed successfully for job {job_id}")
             JOB_STATUS[job_id] = {"status": "completed"}
+    except Exception as e:
+        print(f"Error in start_indexing for job {job_id}: {e}")
+        print(f"Traceback: {traceback.format_exc()}")
+        JOB_STATUS[job_id] = {"status": "error", "details": str(e)}
     except Exception as e:
         JOB_STATUS[job_id] = {
             "status": "error",
