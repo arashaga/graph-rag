@@ -299,47 +299,66 @@ async def chat_stream_endpoint(request: Request):
     overrides = context.get("overrides", {})
     search_method = overrides.get("search_method", "local")
 
+    try:
+        from global_search_module import global_search_stream_generator
+    except ImportError:
+        global_search_stream_generator = None
+
     async def response_generator() -> AsyncGenerator[str, None]:
         try:
-            if search_method == "local":
-                crew_output = await execute_local_search_task(question)
-            elif search_method == "global":
-                crew_output = await execute_global_search_task(question)
-            elif search_method == "agentic":
-                current_task_instructions = task_instructions.format(question=question)
-                crew_output = await execute_task(current_task_instructions)
+            if search_method == "global" and global_search_stream_generator is not None:
+                # Send initial context data with delta (required by frontend)
+                yield json.dumps({
+                    "context": {
+                        "data_points": [],
+                        "followup_questions": [],
+                        "thoughts": []
+                    },
+                    "delta": {
+                        "content": "",
+                        "role": "assistant"
+                    }
+                }) + "\n"
+                # Stream each chunk as it arrives
+                async for chunk in global_search_stream_generator(question):
+                    yield json.dumps({
+                        "delta": {
+                            "content": chunk,
+                            "role": "assistant"
+                        }
+                    }) + "\n"
             else:
-                # Default to local search
-                crew_output = await execute_local_search_task(question)
-            
-            # Convert CrewOutput object to string
-            response = str(crew_output)
-            
-            # Send initial context data with delta (required by frontend)
-            yield json.dumps({
-                "context": {
-                    "data_points": [],
-                    "followup_questions": [],
-                    "thoughts": []
-                },
-                "delta": {
-                    "content": "",
-                    "role": "assistant"
-                }
-            }) + "\n"
-            
-            # Stream the response content
-            yield json.dumps({
-                "delta": {
-                    "content": response,
-                    "role": "assistant"
-                }
-            }) + "\n"
-            
+                if search_method == "local":
+                    crew_output = await execute_local_search_task(question)
+                elif search_method == "global":
+                    crew_output = await execute_global_search_task(question)
+                elif search_method == "agentic":
+                    current_task_instructions = task_instructions.format(question=question)
+                    crew_output = await execute_task(current_task_instructions)
+                else:
+                    # Default to local search
+                    crew_output = await execute_local_search_task(question)
+                response = str(crew_output)
+                yield json.dumps({
+                    "context": {
+                        "data_points": [],
+                        "followup_questions": [],
+                        "thoughts": []
+                    },
+                    "delta": {
+                        "content": "",
+                        "role": "assistant"
+                    }
+                }) + "\n"
+                yield json.dumps({
+                    "delta": {
+                        "content": response,
+                        "role": "assistant"
+                    }
+                }) + "\n"
         except Exception as e:
             print(f"Error in chat_stream_endpoint: {e}")
             yield json.dumps({"error": f"Error processing request: {str(e)}"}) + "\n"
-
     return StreamingResponse(response_generator(), media_type="application/x-ndjson")
 
 @app.post("/ask/")

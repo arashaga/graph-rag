@@ -70,7 +70,16 @@ def run_indexing_sync(job_folder: str, method: IndexingMethod):
         workflow_callbacks.pipeline_end(outputs)
         return outputs
 
-    return asyncio.run(_build())
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        loop = None
+
+    if loop and loop.is_running():
+        # If already in an event loop, create a task and wait for it
+        return asyncio.ensure_future(_build())
+    else:
+        return asyncio.run(_build())
 
 def start_indexing(job_id, job_folder , method):
     """Runs the indexing, updates JOB_STATUS for UI polling."""
