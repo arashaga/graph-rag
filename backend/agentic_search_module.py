@@ -21,8 +21,9 @@ from graphrag.query.structured_search.local_search.mixed_context import LocalSea
 from graphrag.query.structured_search.local_search.search import LocalSearch
 from graphrag.query.structured_search.global_search.community_context import GlobalCommunityContext
 from graphrag.query.structured_search.global_search.search import GlobalSearch
-from crewai import Agent, Task, Crew, LLM
-from crewai.tools import BaseTool
+from semantic_kernel.agents import ChatCompletionAgent, ChatHistoryAgentThread
+from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion
+from semantic_kernel.functions import kernel_function
 import pandas as pd
 import asyncio
 import warnings
@@ -110,129 +111,6 @@ def load_graphrag_data():
     
     print("GraphRAG data loaded")
     return _global_data
-class LocalSearchTool(BaseTool):
-    name: str = "local_search"
-    description: str = "Tool to perform local search operations using GraphRAG's index."
-
-    # Declare all extra fields as Pydantic fields here
-    input_dir: str = None
-    llm_model: str = None
-    embedding_model: str = None
-    api_key: str = None
-    api_base: str = None   
-    
-    def __init__(
-        self,
-        **kwargs
-    ):
-        super().__init__(**kwargs)
-        # Don't create models in __init__ to avoid event loop conflicts
-        # Instead, we'll create them fresh in _run method
-    
-    args_schema: type[BaseModel] = QueryInput
-
-    def _run(self, query):
-        import multiprocessing
-        import warnings
-        import time
-        
-        # Suppress AsyncLimiter warnings
-        warnings.filterwarnings("ignore", message="This AsyncLimiter instance is being re-used across loops")
-        warnings.filterwarnings("ignore", category=RuntimeWarning, message="This AsyncLimiter instance is being re-used across loops")
-        
-        try:
-            # Use multiprocessing to completely isolate the async operations
-            ctx = multiprocessing.get_context('spawn')
-            with ctx.Pool(1) as pool:
-                # Add timeout to prevent hanging (60 seconds)
-                result = pool.apply_async(_run_local_search_process, (query,))
-                response = result.get(timeout=120)
-            return response
-        except multiprocessing.TimeoutError:
-            print(f"LocalSearchTool timeout for query: {query}")
-            return "I'm sorry, the search operation timed out. Please try again with a simpler question."
-        except Exception as e:
-            print(f"LocalSearchTool error for query '{query}': {e}")
-            return f"I'm sorry, there was an error processing your request: {str(e)}"
-
-class GlobalSearchTool(BaseTool):
-    name: str = "global_search"
-    description: str = "Tool to perform global search operations using GraphRAG's index."
-    input_dir: str = None
-    llm_model: str = None
-    api_key: str = None
-    api_base: str = None
-
-    def __init__(
-        self,
-        callbacks=None,
-        **kwargs
-    ):
-        super().__init__(**kwargs)
-        # Don't create models in __init__ to avoid event loop conflicts
-        # Instead, we'll create them fresh in _run method
-    
-    args_schema: type[BaseModel] = QueryInput
-
-    def _run(self, query):
-        import multiprocessing
-        import warnings
-        warnings.filterwarnings("ignore", message="This AsyncLimiter instance is being re-used across loops")
-        warnings.filterwarnings("ignore", category=RuntimeWarning, message="This AsyncLimiter instance is being re-used across loops")
-        try:
-            print("[DEBUG] Global search process started")
-            ctx = multiprocessing.get_context('spawn')
-            with ctx.Pool(1) as pool:
-                result = pool.apply_async(_run_global_search_process, (query,))
-                response = result.get(timeout=240)
-            return response
-        except multiprocessing.TimeoutError:
-            print(f"GlobalSearchTool timeout for query: {query}")
-            import traceback
-            traceback.print_exc()
-            return "I'm sorry, the search operation timed out. Please try again with a simpler question."
-        except Exception as e:
-            print(f"GlobalSearchTool error for query '{query}': {e}")
-            import traceback
-            traceback.print_exc()
-            return f"I'm sorry, there was an error processing your request: {str(e)}"
-        
-print("GRAPHRAG MODEL", config.llm_model)
-graphrag_agent = Agent(
-    role="You are an expert in Microsoft Fabric product",
-    goal="Your goal is to answer the user's questions about Microsoft Fabric.",
-    backstory='As an expert in Microsoft Fabric, you have extensive knowledge about its features,' 
-    ' functionalities, and best practices. You are here to assist users in understanding and utilizing Microsoft Fabric effectively.',
-    tools=[
-        LocalSearchTool(),GlobalSearchTool()],
-    llm=LLM(model=f'azure/{config.llm_model}'),
-    verbose=True,
-)
-
-task_instructions = """
-You are an expert in Microsoft Fabric product. Your goal is to answer the user's question below about Microsoft Fabric.
-
-Users' question:
-{question}
-YOu must follow the below rules:
-1. You must use both tools provided to you to answer the user's questions.
-2- once you get the results from the tools, you must combine them and provide a final answer to the user.
-3- you must not repeat the texts or the contexts that are identical or very similar in both results.
-4- you must not provide the results of the tools to the user, you must only provide the final answer.
-5- if the user speficies that you need to use a specific tool, you must use that sepcific tool for exampl use local search you use the local search tool only.
-6- if the user asks what were the difference between the tool results, you must provide the differences between the two results. Otherwise, you must not provide the differences between the two results."""
-
-
-async def execute_task(task_instructions):
-    task = Task(
-        description=task_instructions,
-        agent=graphrag_agent,
-        expected_output="A concise and accurate answer to the user's question about Microsoft Fabric."
-    
-    )
-    crew = Crew(agents=[graphrag_agent], tasks=[task])
-    result = crew.kickoff()
-    return result
 
 def _run_local_search_process(query):
     """
@@ -429,3 +307,96 @@ def _run_global_search_process(query):
     print(f"[DEBUG] PID {os.getpid()} - LLM call took {time.time() - llm_start:.2f} sec")
     print(f"[DEBUG] PID {os.getpid()} - Total time: {time.time() - start:.2f} sec")
     return result.response
+
+# --- Local Search Plugin ---
+class LocalSearchPlugin:
+    """Semantic Kernel plugin for local search using your existing logic."""
+    def __init__(self, config, data_loader):
+        self.config = config
+        self.data_loader = data_loader
+
+    @kernel_function(description="Answer a question using local search.")
+    async def local_search(self, question: str) -> str:
+        import time
+        from local_search_module import perform_local_search_stream
+        print("[Agentic] Invoking Local Search...")
+        start = time.time()
+        chunks = []
+        async for chunk in perform_local_search_stream(question):
+            chunks.append(chunk)
+        elapsed = time.time() - start
+        print(f"[Agentic] Local Search completed in {elapsed:.2f} seconds.")
+        return "".join(chunks)
+
+# --- Global Search Plugin ---
+class GlobalSearchPlugin:
+    """Semantic Kernel plugin for global search using your existing logic."""
+    def __init__(self, config, data_loader):
+        self.config = config
+        self.data_loader = data_loader
+
+    @kernel_function(description="Answer a question using global search.")
+    async def global_search(self, question: str) -> str:
+        import time
+        from global_search_module import perform_global_search_stream
+        print("[Agentic] Invoking Global Search...")
+        start = time.time()
+        chunks = []
+        async for chunk in perform_global_search_stream(question):
+            chunks.append(chunk)
+        elapsed = time.time() - start
+        print(f"[Agentic] Global Search completed in {elapsed:.2f} seconds.")
+        return "".join(chunks)
+
+# --- Agentic Search Agent using Semantic Kernel ---
+
+async def agentic_search_semantic_kernel(question: str, search_method: str = "agentic") -> str:
+    import time
+    # AzureChatCompletion config
+    deployment_name = config.llm_model
+    endpoint = config.api_base
+    api_key = config.api_key
+    api_version = "2024-02-15-preview"
+
+    service = AzureChatCompletion(
+        deployment_name=deployment_name,
+        endpoint=endpoint,
+        api_key=api_key,
+        api_version=api_version
+    )
+
+    # Plugins
+    local_plugin = LocalSearchPlugin(config, load_graphrag_data)
+    global_plugin = GlobalSearchPlugin(config, load_graphrag_data)
+
+
+    plugins = [local_plugin, global_plugin]
+    instructions = (
+        "Answer the user's question using both local and global search plugins. "
+        "YOu MUST use both Tools Local and Global at the same time to put the response together. "
+        "Combine the results, remove duplicate or similar content, and provide a detailed answer. "
+        
+    )
+
+    agent = ChatCompletionAgent(
+        service=service,
+        name="AgenticSearch",
+        instructions=instructions,
+        plugins=plugins,
+    )
+
+    thread = None
+    print("[Agentic] Starting agentic search...")
+    total_start = time.time()
+    response = await agent.get_response(messages=question, thread=thread)
+    total_elapsed = time.time() - total_start
+    print(f"[Agentic] Agentic search (total) completed in {total_elapsed:.2f} seconds.")
+    return str(response)
+
+# Optionally, add a sync wrapper for FastAPI/main.py compatibility
+
+async def execute_task(task_instructions, search_method="agentic"):
+    """
+    Async wrapper for agentic_search_semantic_kernel for FastAPI/main.py compatibility.
+    """
+    return await agentic_search_semantic_kernel(task_instructions, search_method=search_method)

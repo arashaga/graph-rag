@@ -23,7 +23,7 @@ from tasks import start_indexing, JOB_STATUS
 from fastapi.responses import RedirectResponse,StreamingResponse,FileResponse
 from fastapi import APIRouter # Make sure APIRouter is imported if not already
 from pathlib import Path
-from graph_rag_module import execute_task, task_instructions # Import task_instructions
+from agentic_search_module import execute_task # Import task_instructions
 from local_search_module import  perform_local_search_stream
 from global_search_module import perform_global_search_stream
 #if you wanted to test the MCP you need to uncomment the next line and then change the function signatures
@@ -251,8 +251,7 @@ async def chat_endpoint(request: Request):
         elif search_method == "global":
             crew_output = await perform_global_search_stream(question)
         elif search_method == "agentic":
-            current_task_instructions = task_instructions.format(question=question)
-            crew_output = await execute_task(current_task_instructions)
+            crew_output = await execute_task(question, search_method="agentic")
         else:
             # Default to local search
             crew_output = await execute_local_search_task(question)
@@ -365,8 +364,7 @@ async def chat_stream_endpoint(request: Request):
                         chunks.append(chunk)
                     crew_output = "".join(chunks)
                 elif search_method == "agentic":
-                    current_task_instructions = task_instructions.format(question=question)
-                    crew_output = await execute_task(current_task_instructions)
+                    crew_output = await execute_task(question, search_method="agentic")
                 else:
                     crew_output = await execute_local_search_task(question)
                 response = str(crew_output)
@@ -411,8 +409,7 @@ async def ask_endpoint(request: Request):
         elif search_method == "global":
             crew_output = await perform_global_search_stream(question)
         elif search_method == "agentic":
-            current_task_instructions = task_instructions.format(question=question)
-            crew_output = await execute_task(current_task_instructions)
+            crew_output = await execute_task(question, search_method="agentic")
         else:
             # Default to local search
             crew_output = await execute_local_search_task(question)
