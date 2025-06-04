@@ -149,7 +149,7 @@ def _run_global_search_process(query: str):
     result = asyncio.run(stream_and_collect_results())
     return result
 
-async def global_search_stream_generator(query: str):
+async def perform_global_search_stream(query: str):
     data = load_graphrag_data()
     unique_id = str(uuid.uuid4())[:8]
     chat_config = LanguageModelConfig(
@@ -193,32 +193,3 @@ async def global_search_stream_generator(query: str):
     async for chunk in search_engine.stream_search(query):
         chunk_text = chunk.response if hasattr(chunk, 'response') else str(chunk)
         yield chunk_text
-
-async def main():
-    kernel = Kernel()
-
-    plugin = MCPStreamableHttpPlugin(
-        name="GraphRag",
-        url="http://localhost:50505",
-        load_tools=True,
-        kernel=kernel
-    )
-
-    kernel.add_plugin(plugin)
-
-    settings = kernel.get_service().default_settings
-    settings.function_choice_behavior = FunctionChoiceBehavior.Auto()
-    history = ChatHistory()
-    history.add_system_message("You are an expert in Microsoft Fabric providing global search-based answers.")
-    
-    user_question = input("Enter your question about Microsoft Fabric: ")
-    history.add_user_message(user_question)
-
-    global_search_response = await execute_global_search_task(user_question)
-    history.add_assistant_message(global_search_response)
-
-    print("Answer:", global_search_response)
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
-    asyncio.run(main())

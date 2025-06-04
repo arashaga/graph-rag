@@ -2,7 +2,7 @@ import asyncio
 import os
 import logging
 from semantic_kernel import Kernel
-from semantic_kernel.connectors.mcp import MCPStreamableHttpPlugin, MCPSsePlugin
+from semantic_kernel.connectors.mcp import MCPStreamableHttpPlugin
 from semantic_kernel.connectors.ai import FunctionChoiceBehavior
 from semantic_kernel.contents import ChatHistory
 #from samples.concepts.setup.chat_completion_services import Services, get_chat_completion_service_and_request_settings
@@ -52,7 +52,6 @@ load_dotenv()
 async def execute_global_search_task_mcp_stream(question: str):
     kernel = Kernel()
     from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion, AzureChatPromptExecutionSettings
-    import sys
 
     deployment_name = "gpt-4o"  # Replace with your actual deployment name if different
     endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
@@ -83,7 +82,7 @@ async def execute_global_search_task_mcp_stream(question: str):
     kernel.add_service(chat_service)
     settings = request_settings
     settings.function_choice_behavior = FunctionChoiceBehavior.Auto()
-    #MCPStreamableHttpPlugin
+
     plugin = MCPStreamableHttpPlugin(
         name="GraphRag",
         url="http://127.0.0.1:8111/mcp",
@@ -107,31 +106,8 @@ async def execute_global_search_task_mcp_stream(question: str):
     response_stream = kernel.get_service().get_streaming_chat_message_content(
         history, settings, kernel=kernel
     )
-    try:
-        async for chunk in response_stream:
-            print(f"received chunks")
-            if chunk and hasattr(chunk, "content"):
-                yield chunk.content
-    except GeneratorExit:
-        # Handle generator cleanup gracefully
-        pass
-    except Exception as e:
-        logging.error(f"Error during streaming: {e}")
-        yield f"Error: {str(e)}"
-    finally:
-        # Ensure plugin is properly disconnected
-        try:
-            await plugin.disconnect()
-        except Exception as e:
-            logging.error(f"Error disconnecting plugin: {e}")
-
-if __name__ == "__main__":
-
-    async def main():
-        question = "what is ms Fabric?"
-        async for content in execute_global_search_task_mcp_stream(question):
-            print(content, end="", flush=True)
-
-    asyncio.run(main())
+    async for chunk in response_stream:
+        if chunk and hasattr(chunk, "content"):
+            yield chunk.content
 
 # Make sure you have set OPENAI_API_KEY or other credentials in your environment!

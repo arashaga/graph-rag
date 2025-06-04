@@ -24,8 +24,10 @@ from fastapi.responses import RedirectResponse,StreamingResponse,FileResponse
 from fastapi import APIRouter # Make sure APIRouter is imported if not already
 from pathlib import Path
 from graph_rag_module import execute_task, task_instructions # Import task_instructions
-from local_search_module import execute_local_search_task
-from global_search_module import execute_global_search_task
+from local_search_module import  perform_local_search_stream
+from global_search_module import perform_global_search_stream
+#if you wanted to test the MCP you need to uncomment the next line and then change the function signatures
+#from global_search import execute_global_search_task_mcp_stream
 from config import (
     CONFIG_AGENT_CLIENT,
     CONFIG_AGENTIC_RETRIEVAL_ENABLED,
@@ -82,15 +84,15 @@ async def startup_event():
     
     # Load GraphRAG data once at startup for all search modules
     print("🚀 Loading GraphRAG data at server startup...")
-    from graph_rag_module import load_graphrag_data
-    from local_search_module import load_graphrag_data as load_local_data
-    from global_search_module import load_graphrag_data as load_global_data
+  
+    # from local_search_module import load_graphrag_data as load_local_data
+    # from global_search import load_graphrag_data as load_global_data
     
-    # Load data for all modules
-    load_graphrag_data()  # For agentic search
-    load_local_data()     # For local search
-    load_global_data()    # For global search
-    print("✅ GraphRAG data loaded successfully for all search methods!")
+    # # Load data for all modules
+    # load_graphrag_data()  # For agentic search
+    # load_local_data()     # For local search
+    # load_global_data()    # For global search
+    # print("✅ GraphRAG data loaded successfully for all search methods!")
     
     AZURE_TENANT_ID = os.getenv("AZURE_TENANT_ID")
     AZURE_USE_AUTHENTICATION = os.getenv("AZURE_USE_AUTHENTICATION", "").lower() == "true"
@@ -247,7 +249,7 @@ async def chat_endpoint(request: Request):
         if search_method == "local":
             crew_output = await execute_local_search_task(question)
         elif search_method == "global":
-            crew_output = await execute_global_search_task(question)
+            crew_output = await perform_global_search_stream(question)
         elif search_method == "agentic":
             current_task_instructions = task_instructions.format(question=question)
             crew_output = await execute_task(current_task_instructions)
@@ -300,13 +302,16 @@ async def chat_stream_endpoint(request: Request):
     search_method = overrides.get("search_method", "local")
 
     try:
-        from global_search_module import global_search_stream_generator
+        from global_search_module import perform_global_search_stream
     except ImportError:
         global_search_stream_generator = None
 
+    #testing TODO revert it back if you want to use just the global search module
+    #global_search_stream_generator = None
+    #######################################################################
     async def response_generator() -> AsyncGenerator[str, None]:
         try:
-            if search_method == "global" and global_search_stream_generator is not None:
+            if search_method == "global" and perform_global_search_stream is not None:
                 # Send initial context data with delta (required by frontend)
                 yield json.dumps({
                     "context": {
@@ -320,7 +325,27 @@ async def chat_stream_endpoint(request: Request):
                     }
                 }) + "\n"
                 # Stream each chunk as it arrives
-                async for chunk in global_search_stream_generator(question):
+                async for chunk in perform_global_search_stream(question):
+                    yield json.dumps({
+                        "delta": {
+                            "content": chunk,
+                            "role": "assistant"
+                        }
+                    }) + "\n"
+            elif search_method == "local" and perform_local_search_stream is not None:
+                # Stream each chunk as it arrives for local search
+                yield json.dumps({
+                    "context": {
+                        "data_points": [],
+                        "followup_questions": [],
+                        "thoughts": []
+                    },
+                    "delta": {
+                        "content": "",
+                        "role": "assistant"
+                    }
+                }) + "\n"
+                async for chunk in perform_local_search_stream(question):
                     yield json.dumps({
                         "delta": {
                             "content": chunk,
@@ -329,14 +354,20 @@ async def chat_stream_endpoint(request: Request):
                     }) + "\n"
             else:
                 if search_method == "local":
-                    crew_output = await execute_local_search_task(question)
+                    # fallback: collect all chunks (should not be needed)
+                    chunks = []
+                    async for chunk in perform_local_search_stream(question):
+                        chunks.append(chunk)
+                    crew_output = "".join(chunks)
                 elif search_method == "global":
-                    crew_output = await execute_global_search_task(question)
+                    chunks = []
+                    async for chunk in perform_global_search_stream(question):
+                        chunks.append(chunk)
+                    crew_output = "".join(chunks)
                 elif search_method == "agentic":
                     current_task_instructions = task_instructions.format(question=question)
                     crew_output = await execute_task(current_task_instructions)
                 else:
-                    # Default to local search
                     crew_output = await execute_local_search_task(question)
                 response = str(crew_output)
                 yield json.dumps({
@@ -378,7 +409,7 @@ async def ask_endpoint(request: Request):
         if search_method == "local":
             crew_output = await execute_local_search_task(question)
         elif search_method == "global":
-            crew_output = await execute_global_search_task(question)
+            crew_output = await perform_global_search_stream(question)
         elif search_method == "agentic":
             current_task_instructions = task_instructions.format(question=question)
             crew_output = await execute_task(current_task_instructions)
