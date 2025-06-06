@@ -23,7 +23,7 @@ from tasks import start_indexing, JOB_STATUS
 from fastapi.responses import RedirectResponse,StreamingResponse,FileResponse
 from fastapi import APIRouter # Make sure APIRouter is imported if not already
 from pathlib import Path
-from agentic_search_module import execute_task # Import task_instructions
+from agentic_search_module import execute_task,execute_task_stream # Import task_instructions
 from local_search_module import  perform_local_search_stream
 from global_search_module import perform_global_search_stream
 #if you wanted to test the MCP you need to uncomment the next line and then change the function signatures
@@ -364,27 +364,49 @@ async def chat_stream_endpoint(request: Request):
                         chunks.append(chunk)
                     crew_output = "".join(chunks)
                 elif search_method == "agentic":
-                    crew_output = await execute_task(question, search_method="agentic")
+                    #crew_output = await execute_task(question, search_method="agentic")
+                    # Send the initial context (just like local/global for frontend compatibility)
+                    yield json.dumps({
+                        "context": {
+                            "data_points": [],
+                            "followup_questions": [],
+                            "thoughts": []
+                        },
+                        "delta": {
+                            "content": "",
+                            "role": "assistant"
+                        }
+                    }) + "\n"
+
+                    # Stream each chunk as it arrives from the agentic search
+                    async for chunk in execute_task_stream(question, search_method="agentic"):
+                        yield json.dumps({
+                            "delta": {
+                                "content": chunk,
+                                "role": "assistant"
+                            }
+                        }) + "\n"
+
                 else:
                     crew_output = await execute_local_search_task(question)
-                response = str(crew_output)
-                yield json.dumps({
-                    "context": {
-                        "data_points": [],
-                        "followup_questions": [],
-                        "thoughts": []
-                    },
-                    "delta": {
-                        "content": "",
-                        "role": "assistant"
-                    }
-                }) + "\n"
-                yield json.dumps({
-                    "delta": {
-                        "content": response,
-                        "role": "assistant"
-                    }
-                }) + "\n"
+                    response = str(crew_output)
+                    yield json.dumps({
+                        "context": {
+                            "data_points": [],
+                            "followup_questions": [],
+                            "thoughts": []
+                        },
+                        "delta": {
+                            "content": "",
+                            "role": "assistant"
+                        }
+                    }) + "\n"
+                    yield json.dumps({
+                        "delta": {
+                            "content": response,
+                            "role": "assistant"
+                        }
+                    }) + "\n"
         except Exception as e:
             print(f"Error in chat_stream_endpoint: {e}")
             yield json.dumps({"error": f"Error processing request: {str(e)}"}) + "\n"

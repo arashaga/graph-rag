@@ -393,6 +393,69 @@ async def agentic_search_semantic_kernel(question: str, search_method: str = "ag
     print(f"[Agentic] Agentic search (total) completed in {total_elapsed:.2f} seconds.")
     return str(response)
 
+
+
+# Indentation fix for import
+from typing import AsyncGenerator
+
+#### adding this for streaming support
+async def agentic_search_semantic_kernel_stream(
+    question: str,
+    search_method: str = "agentic"
+) -> AsyncGenerator[str, None]:
+    import time
+
+    deployment_name = config.llm_model
+    endpoint = config.api_base
+    api_key = config.api_key
+    api_version = "2024-02-15-preview"
+
+    service = AzureChatCompletion(
+        deployment_name=deployment_name,
+        endpoint=endpoint,
+        api_key=api_key,
+        api_version=api_version
+    )
+
+    # Plugins
+    local_plugin = LocalSearchPlugin(config, load_graphrag_data)
+    global_plugin = GlobalSearchPlugin(config, load_graphrag_data)
+    plugins = [local_plugin, global_plugin]
+
+    instructions = (
+        "Answer the user's question using both local and global search plugins. "
+        "YOu MUST use both Tools Local and Global at the same time to put the response together. "
+        "Combine the results, remove duplicate or similar content, and provide a detailed answer. "
+    )
+
+    agent = ChatCompletionAgent(
+        service=service,
+        name="AgenticSearch",
+        instructions=instructions,
+        plugins=plugins,
+    )
+
+    thread = None
+    print("[Agentic] Starting agentic search (streaming)...")
+    total_start = time.time()
+    try:
+        async for response_item in agent.invoke_stream(messages=question, thread=thread):
+            # Each response_item.message is a StreamingChatMessageContent
+            if hasattr(response_item.message, "content") and response_item.message.content:
+                # Yield plain chunk text to the FastAPI endpoint
+                yield response_item.message.content
+    finally:
+        total_elapsed = time.time() - total_start
+        print(f"[Agentic] Agentic search (streaming) completed in {total_elapsed:.2f} seconds.")
+
+# Sync wrapper for backward compatibility, if needed
+async def execute_task_stream(task_instructions, search_method="agentic"):
+    """
+    Async wrapper for agentic_search_semantic_kernel_stream for FastAPI/main.py compatibility.
+    """
+    async for chunk in agentic_search_semantic_kernel_stream(task_instructions, search_method=search_method):
+        yield chunk
+
 # Optionally, add a sync wrapper for FastAPI/main.py compatibility
 
 async def execute_task(task_instructions, search_method="agentic"):
