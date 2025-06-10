@@ -44,3 +44,17 @@ in the UI add the navigation and make sure it uses fluent UI
 you need to make sure to add /auth_setup in the backend to be able to run the app
 
 make sure to register web app with redirect URL
+
+
+-----------------
+TODOS:
+
+- load the graphrag data once
+- add azure search and cosmos
+- fix the UI to remove extra stuff
+- add prompt tuning to the indexing pipeline
+- add the option to pick the index from the UI
+- fix the chat history
+- fix the Authentication
+- add the visulization
+- deploy as an app in the Azure Continer apps

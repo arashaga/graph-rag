@@ -9,58 +9,6 @@ Given a text document that is potentially relevant to this activity and a list o
 - entity_description: Comprehensive description of the entity's attributes and activities
 Format each entity as ("entity"{tuple_delimiter}<entity_name>{tuple_delimiter}<entity_type>{tuple_delimiter}<entity_description>)
 this document is a tehcnology documentation  so make sure the NER are aligned with this type of corpus. sample entiries are:
-1-Date
-    July 2024
-    June 2024
-    May 2024
-2-Organization
-    Microsoft Fabric
-    Microsoft Research
-    Google Cloud
-3-Product
-    Warehouse
-    Microsoft Fabric
-    Azure Data Studio
-4-Software Feature
-    time travel
-    Restore warehouse
-    Warehouse source control
-5-Programming Language/Standard
-    T-SQL
-    KQL
-    SQL
-6-File Format
-    Delta Lake
-    Parquet
-    CSV
-7-Location
-    OneLake
-    Azure DevOps
-    GitHub
-8-Protocol/API
-    REST API
-    Spark API
-    TDS endpoint
-9-Tool/Utility
-    SQLPackage
-    Terraform Provider
-    Database Watcher
-10-Security Feature
-    Dynamic data masking
-    Column-level and row-level security
-    Trusted workspace access
-11-Authentication Method
-    Microsoft Entra ID authentication
-    SQL Authentication
-    Service principal
-12-Conceptual Term
-    data warehousing industry
-    CI/CD
-    partition elimination
-13-Product feature
-    Power BI semantic models
-    Power BI dataset
-    Fabric Private Links
 
  
 2. From the entities identified in step 1, identify all pairs of (source_entity, target_entity) that are *clearly related* to each other.
